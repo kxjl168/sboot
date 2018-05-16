@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.CombinationMapper">
+    <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.Combination">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="GATEWAY_ID" property="gatewayId" jdbcType="VARCHAR" />
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+        <result column="COMMAND_GROUP" property="commandGroup" jdbcType="VARCHAR"/>
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="IMG_URL" property="imgUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.ztgm.iot.pojo.Combination" extends="BaseResultMap">
+        <result column="IMG" property="img" jdbcType="LONGVARBINARY"/>
+    </resultMap>
+  <sql id="Base_Column_List" >
+    ID, GROUP_ID, GATEWAY_ID,USER_ID, NAME, COMMAND_GROUP, CREATE_DATE, CREATER,IMG_URL
+  </sql>
+    <sql id="Blob_Column_List">
+    IMG
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from iot_combination
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <!--查找所有场景-->
+    <select id="sceneList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from iot_combination
+    </select>
+
+
+    <!--用户ID查找场景-->
+    <select id="sceneListByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from iot_combination
+        WHERE  USER_ID= #{userId,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="sceneListBygroupId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from iot_combination
+        WHERE GROUP_ID = #{groupId,jdbcType=VARCHAR}
+    </select>
+
+    <!--场景名称查找场景-->
+    <select id="findSceneBySceneName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+
+        from iot_combination
+        WHERE NAME = #{sceneName,jdbcType=VARCHAR}
+    </select>
+
+    <!--查找单个场景-->
+    <select id="findSceneBySceneId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from iot_combination
+        where ID = #{sceneId,jdbcType=VARCHAR}
+    </select>
+
+    <!--查找场景 默认场景-->
+    <select id="selectDefaultScenes" resultMap="BaseResultMap"  parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from iot_combination
+        WHERE  USER_ID= #{userId,jdbcType=VARCHAR} AND CREATER='system';
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from iot_combination
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.iot.pojo.Combination" >
+    insert into iot_combination (ID, GROUP_ID, GATEWAY_ID,USER_ID,
+    NAME, COMMAND_GROUP, CREATE_DATE,
+    CREATER,IMG_URL, IMG)
+    values (#{id,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{gatewayId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+    #{name,jdbcType=VARCHAR}, #{commandGroup,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+    #{creater,jdbcType=VARCHAR},#{imgUrl,jdbcType=VARCHAR}, #{img,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.Combination" >
+    insert into iot_combination
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="groupId != null" >
+        GROUP_ID,
+      </if>
+      <if test="gatewayId != null" >
+        GATEWAY_ID,
+      </if>
+        <if test="userId != null" >
+            USER_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="commandGroup != null" >
+        COMMAND_GROUP,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="imgUrl != null" >
+          IMG_URL,
+      </if>
+      <if test="img != null" >
+        IMG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayId != null" >
+        #{gatewayId,jdbcType=VARCHAR},
+      </if>
+        <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="commandGroup != null" >
+        #{commandGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+        <if test="imgUrl != null" >
+            #{imgUrl,jdbcType=VARCHAR},
+        </if>
+      <if test="img != null" >
+        #{img,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.Combination" >
+    update iot_combination
+    <set >
+      <if test="groupId != null" >
+        GROUP_ID = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayId != null" >
+        GATEWAY_ID = #{gatewayId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+          USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="commandGroup != null" >
+        COMMAND_GROUP = #{commandGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+        <if test="imgUrl != null" >
+            IMG_URL = #{imgUrl,jdbcType=VARCHAR},
+        </if>
+      <if test="img != null" >
+        IMG = #{img,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ztgm.iot.pojo.Combination" >
+    update iot_combination
+    set GROUP_ID = #{groupId,jdbcType=VARCHAR},
+    GATEWAY_ID = #{gatewayId,jdbcType=VARCHAR},
+     USER_ID = #{userId,jdbcType=VARCHAR},
+    NAME = #{name,jdbcType=VARCHAR},
+    COMMAND_GROUP = #{commandGroup,jdbcType=VARCHAR},
+    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+    CREATER = #{creater,jdbcType=VARCHAR},
+    IMG_URL = #{imgUrl,jdbcType=VARCHAR},
+    IMG = #{img,jdbcType=LONGVARBINARY}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.Combination" >
+    update iot_combination
+    set GROUP_ID = #{groupId,jdbcType=VARCHAR},
+    GATEWAY_ID = #{gatewayId,jdbcType=VARCHAR},
+    USER_ID = #{userId,jdbcType=VARCHAR},
+    NAME = #{name,jdbcType=VARCHAR},
+    COMMAND_GROUP = #{commandGroup,jdbcType=VARCHAR},
+    CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+    CREATER = #{creater,jdbcType=VARCHAR},
+    IMG_URL = #{imgUrl,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

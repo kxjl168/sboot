@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.GateWayMapper" >
+  <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.GateWay" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="AUTH_KEY" property="authKey" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="ENABLE_ENCRYPT" property="enableEncrypt" jdbcType="INTEGER" />
+    <result column="MANUFACTURER_ID" property="manufacturerId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, NAME, AUTH_KEY, CREATE_DATE, CREATER, ENABLE_ENCRYPT, MANUFACTURER_ID, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from iot_gateway
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from iot_gateway
+    where NAME = #{name,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectGateWaysByGroup" resultMap="BaseResultMap">
+   SELECT
+    iot_gateway.ID,
+    iot_gateway.`NAME`,
+    iot_gateway.AUTH_KEY,
+    iot_gateway.CREATE_DATE,
+    iot_gateway.CREATER,
+    iot_gateway.ENABLE_ENCRYPT,
+    iot_gateway.MANUFACTURER_ID,
+    iot_gateway.`status`
+    FROM
+    iot_gateway
+    INNER JOIN iot_gateway_group ON iot_gateway_group.GATEWAY_ID = iot_gateway.ID
+    INNER JOIN iot_group ON iot_gateway_group.GROUP_ID = iot_group.ID
+    WHERE
+    iot_group.ID in
+    <foreach item="item" index="index" collection="list"
+             open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+
+
+
+  <select id="selectByDeviceId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   SELECT
+    iot_gateway.ID,
+    iot_gateway.`NAME`,
+    iot_gateway.AUTH_KEY,
+    iot_gateway.CREATE_DATE,
+    iot_gateway.CREATER,
+    iot_gateway.ENABLE_ENCRYPT,
+    iot_gateway.MANUFACTURER_ID,
+    iot_gateway.`status`
+    FROM
+    iot_gateway
+    INNER JOIN iot_gateway_device ON iot_gateway_device.GATEWAY_ID = iot_gateway.ID
+    INNER JOIN iot_device ON iot_gateway_device.DEVICE_ID = iot_device.ID
+    WHERE  iot_device.ID = #{deviceId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByRegionID" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   SELECT
+    iot_gateway.ID,
+    iot_gateway.`NAME`,
+    iot_gateway.AUTH_KEY,
+    iot_gateway.CREATE_DATE,
+    iot_gateway.CREATER,
+    iot_gateway.ENABLE_ENCRYPT,
+    iot_gateway.MANUFACTURER_ID,
+    iot_gateway.`status`
+    FROM
+    iot_gateway
+    INNER JOIN iot_region ON iot_region.GATEWAY_ID = iot_gateway.ID
+    WHERE
+    iot_region.ID = #{regionId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectBySceneId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT
+      iot_gateway.ID,
+      iot_gateway.`NAME`,
+      iot_gateway.AUTH_KEY,
+      iot_gateway.CREATE_DATE,
+      iot_gateway.CREATER,
+      iot_gateway.ENABLE_ENCRYPT,
+      iot_gateway.MANUFACTURER_ID,
+      iot_gateway.`status`
+      FROM
+      iot_gateway
+      INNER JOIN iot_combination ON iot_combination.GATEWAY_ID = iot_gateway.ID
+      WHERE
+      iot_combination.ID = #{sceneId,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_gateway
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.iot.pojo.GateWay" >
+    insert into iot_gateway (ID, NAME, AUTH_KEY, 
+      CREATE_DATE, CREATER, ENABLE_ENCRYPT, 
+      MANUFACTURER_ID, status)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{authKey,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{enableEncrypt,jdbcType=INTEGER},
+      #{manufacturerId,jdbcType=VARCHAR}, #{status,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.GateWay" >
+    insert into iot_gateway
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="authKey != null" >
+        AUTH_KEY,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="enableEncrypt != null" >
+        ENABLE_ENCRYPT,
+      </if>
+      <if test="manufacturerId != null" >
+        MANUFACTURER_ID,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="authKey != null" >
+        #{authKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="enableEncrypt != null" >
+        #{enableEncrypt,jdbcType=INTEGER},
+      </if>
+      <if test="manufacturerId != null" >
+        #{manufacturerId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.GateWay" >
+    update iot_gateway
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="authKey != null" >
+        AUTH_KEY = #{authKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="enableEncrypt != null" >
+        ENABLE_ENCRYPT = #{enableEncrypt,jdbcType=INTEGER},
+      </if>
+      <if test="manufacturerId != null" >
+        MANUFACTURER_ID = #{manufacturerId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.GateWay" >
+    update iot_gateway
+    set NAME = #{name,jdbcType=VARCHAR},
+      AUTH_KEY = #{authKey,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      ENABLE_ENCRYPT = #{enableEncrypt,jdbcType=INTEGER},
+      MANUFACTURER_ID = #{manufacturerId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+
+  <select id="selectGateWaysByConditions" resultMap="BaseResultMap" parameterType="java.util.Map" >
+
+      select distinct gw.*
+      from iot_gateway gw
+       join iot_gateway_group gp
+      on gw.ID=gp.GateWay_ID
+       join iot_group_user gu
+      on gp.GROUP_ID=gu.GROUP_ID
+      <if test="status!=null">
+          AND gw.status = #{status}
+      </if>
+      <if test="userId!=null">
+          AND gu.USER_ID=#{userId}
+      </if>
+
+  </select>
+</mapper>

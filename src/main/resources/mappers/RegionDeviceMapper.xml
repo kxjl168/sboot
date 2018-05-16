@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.RegionDeviceMapper">
+    <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.RegionDevice">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="REGION_ID" property="regionId" jdbcType="VARCHAR"/>
+        <result column="DEVICE_ID" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, GROUP_ID,REGION_ID, DEVICE_ID, CREATE_DATE, CREATER
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from iot_region_device
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+
+    <!--主键查询区域及对应的设备及状态-->
+    <select id="findRegionByRegionId" resultMap="RegionDevice" parameterType="java.lang.String">
+        SELECT
+        iot_region.ID RegID,
+        iot_region.`NAME` RegName,
+        iot_region.DESCR RegDescr,
+        iot_region.CREATE_DATE RegCreateData,
+        iot_region.CREATER RegCreater,
+        iot_device.*
+        FROM
+        (  SELECT
+	iot_device.*,
+	iot_device_picture.PICTURE_NAME,
+	iot_device_picture.PICTURE_CODE,
+	iot_device_picture.APP_PICTURE_OPEN,
+	iot_device_picture.APP_PICTURE_CLOSE
+FROM
+	(
+		SELECT
+			iot_device.*, iot_device_status_log.`DATA`
+		FROM
+			iot_device,
+			(
+				SELECT
+	a.*
+FROM
+	iot_device_status_log a
+WHERE
+	NOT EXISTS (
+		SELECT
+			*
+		FROM
+			iot_device_status_log b
+		WHERE
+			b.DEVICE_ID = a.DEVICE_ID
+		AND b.OPT_TIME > a.OPT_TIME
+	)
+			) iot_device_status_log
+		WHERE
+			iot_device_status_log.DEVICE_ID = iot_device.ID
+	) iot_device
+	  INNER JOIN iot_group_device ON iot_group_device.DEVICE_ID = iot_device.ID,
+	iot_device_picture
+WHERE
+        iot_device_picture.ID = iot_device.PICTURE_ID And iot_group_device.GROUP_ID in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>) iot_device
+        INNER JOIN iot_region_device ON iot_region_device.DEVICE_ID = iot_device.ID
+        INNER JOIN iot_region ON iot_region_device.REGION_ID = iot_region.ID
+        INNER JOIN iot_group_region ON iot_group_region.REGION_ID = iot_region.ID
+        where iot_group_region.GROUP_ID in
+         ORDER BY  iot_device.NAME ASC
+    </select>
+
+
+
+    <!--每个区域及对应的设备及状态-->
+    <select id="regionList" resultMap="RegionDevice">
+       SELECT
+        iot_region.ID RegID,
+        iot_region.`NAME` RegName,
+        iot_region.DESCR RegDescr,
+        iot_region.CREATE_DATE RegCreateData,
+        iot_region.CREATER RegCreater,
+        iot_device.*
+      FROM
+	      (  SELECT
+	iot_device.*,
+	iot_device_picture.PICTURE_NAME,
+	iot_device_picture.PICTURE_CODE,
+	iot_device_picture.APP_PICTURE_OPEN,
+	iot_device_picture.APP_PICTURE_CLOSE
+FROM
+	(
+		SELECT
+			iot_device.*, iot_device_status_log.`DATA`
+		FROM
+			iot_device,
+			(
+				SELECT
+	a.*
+FROM
+	iot_device_status_log a
+WHERE
+	NOT EXISTS (
+		SELECT
+			*
+		FROM
+			iot_device_status_log b
+		WHERE
+			b.DEVICE_ID = a.DEVICE_ID
+		AND b.OPT_TIME > a.OPT_TIME
+	)
+			) iot_device_status_log
+		WHERE
+			iot_device_status_log.DEVICE_ID = iot_device.ID
+	) iot_device,
+	iot_device_picture
+WHERE
+	iot_device_picture.ID = iot_device.PICTURE_ID) iot_device
+      INNER JOIN iot_region_device ON iot_region_device.DEVICE_ID = iot_device.ID
+      INNER JOIN iot_region ON iot_region_device.REGION_ID = iot_region.ID
+    </select>
+
+    <!--（用户ID）区域及对应的设备及状态-->
+    <select id="regionListBygroupId" resultMap="RegionDevice">
+        SELECT
+        iot_region.ID RegID,
+        iot_region.`NAME` RegName,
+        iot_region.DESCR RegDescr,
+        iot_region.CREATE_DATE RegCreateData,
+        iot_region.CREATER RegCreater,
+        iot_device.*
+        FROM
+        (  SELECT
+	iot_device.*,
+	iot_device_picture.PICTURE_NAME,
+	iot_device_picture.PICTURE_CODE,
+	iot_device_picture.APP_PICTURE_OPEN,
+	iot_device_picture.APP_PICTURE_CLOSE
+FROM
+	(
+		SELECT
+			iot_device.*, iot_device_status_log.`DATA`
+		FROM
+			iot_device,
+			(
+				SELECT
+	a.*
+FROM
+	iot_device_status_log a
+WHERE
+	NOT EXISTS (
+		SELECT
+			*
+		FROM
+			iot_device_status_log b
+		WHERE
+			b.DEVICE_ID = a.DEVICE_ID
+		AND b.OPT_TIME > a.OPT_TIME
+	)
+			) iot_device_status_log
+		WHERE
+			iot_device_status_log.DEVICE_ID = iot_device.ID
+	) iot_device
+        INNER JOIN iot_group_device ON iot_group_device.DEVICE_ID = iot_device.ID,
+	iot_device_picture
+WHERE
+	iot_device_picture.ID = iot_device.PICTURE_ID And iot_group_device.GROUP_ID in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+        #{item}
+    </foreach>) iot_device
+        INNER JOIN iot_region_device ON iot_region_device.DEVICE_ID = iot_device.ID
+        INNER JOIN iot_region ON iot_region_device.REGION_ID = iot_region.ID
+        INNER JOIN iot_group_region ON iot_group_region.REGION_ID = iot_region.ID
+        where iot_group_region.GROUP_ID in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER  BY iot_region.NAME ASC
+    </select>
+
+
+    <resultMap type="com.ztgm.iot.pojo.RegionDeviceList" id="RegionDevice">
+        <result column="RegName" property="regionName"/>
+        <result column="RegID" property="regId"/>
+        <association property="region" column="REGION_ID" javaType="com.ztgm.iot.pojo.Region">
+            <id column="RegID" property="id" jdbcType="VARCHAR"/>
+            <id column="GROUP_ID" property="groupId" jdbcType="VARCHAR"/>
+            <result column="RegName" property="name" jdbcType="VARCHAR"/>
+            <result column="RegDescr" property="descr" jdbcType="VARCHAR"/>
+            <result column="RegCreateData" property="createDate" jdbcType="TIMESTAMP"/>
+            <result column="RegCreater" property="creater" jdbcType="VARCHAR"/>
+        </association>
+        <collection property="deviceList" column="DEVICE_ID" ofType="com.ztgm.iot.pojo.Device">
+            <id column="ID" property="id" jdbcType="VARCHAR"/>
+            <result column="NAME" property="name" jdbcType="VARCHAR"/>
+            <result column="CHANNEL_TYPE" property="channelType" jdbcType="INTEGER"/>
+            <result column="PARAM_TYPE" property="paramType" jdbcType="INTEGER"/>
+            <result column="UNIT_CODE" property="unitCode" jdbcType="INTEGER"/>
+            <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+            <result column="RESERVED" property="reserved" jdbcType="INTEGER"/>
+            <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP"/>
+            <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+            <result column="DATA" property="data" jdbcType="VARCHAR"/>
+            <association property="devicePicture" javaType="com.ztgm.iot.pojo.DevicePicture">
+                <id column="PICTURE_ID" property="id" jdbcType="VARCHAR" />
+                <result column="PICTURE_NAME" property="pictureName" jdbcType="VARCHAR" />
+                <result column="PICTURE_CODE" property="pictureCode" jdbcType="VARCHAR" />
+                <result column="APP_PICTURE_OPEN" property="appPictureOpen" jdbcType="VARCHAR" />
+                <result column="APP_PICTURE_CLOSE" property="appPictureClose" jdbcType="VARCHAR" />
+            </association>
+        </collection>
+    </resultMap>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from iot_region_device
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.ztgm.iot.pojo.RegionDevice">
+    insert into iot_region_device (ID, REGION_ID, DEVICE_ID, 
+      CREATE_DATE, CREATER)
+    values (#{id,jdbcType=VARCHAR}, #{regionId,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.RegionDevice">
+        insert into iot_region_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="regionId != null">
+                REGION_ID,
+            </if>
+            <if test="deviceId != null">
+                DEVICE_ID,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="regionId != null">
+                #{regionId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.RegionDevice">
+        update iot_region_device
+        <set>
+            <if test="regionId != null">
+                REGION_ID = #{regionId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                DEVICE_ID = #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.RegionDevice">
+    update iot_region_device
+    set REGION_ID = #{regionId,jdbcType=VARCHAR},
+      DEVICE_ID = #{deviceId,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      CREATER = #{creater,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

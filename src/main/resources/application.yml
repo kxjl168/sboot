@@ -1,0 +1,39 @@
+server:
+ port: 9090
+# port: 7441
+#server.ssl.key-store: debug.keystore.jks
+#server.ssl.key-store-password: android
+#server.ssl.keyStoreType: JKS
+#server.ssl.keyAlias: androiddebugkey
+mybatis:
+  #mapper.xml所在位置
+  mapper-locations: classpath:mappers/*.xml
+  #实体类所做包
+  type-aliases-package: com.ztgm.iot.pojo
+
+spring:
+  #上传文件最大值
+   http.multipart.maxFileSize: 1000Mb
+   http.multipart.maxRequestSize: 1000Mb
+   datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.100.134:3306/zshop?useUnicode=true&characterEncoding=utf-8
+    #url: jdbc:mysql://192.168.100.134:3306/hciot?useUnicode=true&characterEncoding=utf-8
+    username: ztgmiot
+    password: ztgmiot123456
+   freemarker:
+    #模板加载的位置
+    template-loader-path: classpath:/templates
+    #关闭缓存
+    cache: false
+    allow-request-override: false
+    check-template-location: true
+    charset: UTF-8
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    request-context-attribute: request
+    expose-spring-macro-helpers: false
+    settings-template-update-delay: 0
+   aop:
+    proxy-target-class: true

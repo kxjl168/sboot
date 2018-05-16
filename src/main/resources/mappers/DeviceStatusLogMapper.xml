@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.DeviceStatusLogMapper" >
+  <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.DeviceStatusLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DEVICE_ID" property="deviceId" jdbcType="VARCHAR" />
+    <result column="SOURCE_ADDRESS" property="sourceAddress" jdbcType="VARCHAR" />
+    <result column="TARGET_ADDRESS" property="targetAddress" jdbcType="VARCHAR" />
+    <result column="COMMAND" property="command" jdbcType="INTEGER" />
+    <result column="PARAM_TYPE" property="paramType" jdbcType="INTEGER" />
+    <result column="DATA" property="data" jdbcType="VARCHAR" />
+    <result column="OPT_TIME" property="optTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, NAME, DEVICE_ID, SOURCE_ADDRESS, TARGET_ADDRESS, COMMAND, PARAM_TYPE, DATA, OPT_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_device_status_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_device_status_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.iot.pojo.DeviceStatusLog" >
+    insert into iot_device_status_log (ID, NAME, DEVICE_ID, 
+      SOURCE_ADDRESS, TARGET_ADDRESS, COMMAND, 
+      PARAM_TYPE, DATA, OPT_TIME
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, 
+      #{sourceAddress,jdbcType=VARCHAR}, #{targetAddress,jdbcType=VARCHAR}, #{command,jdbcType=INTEGER}, 
+      #{paramType,jdbcType=INTEGER}, #{data,jdbcType=VARCHAR}, #{optTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.DeviceStatusLog" >
+    insert into iot_device_status_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="deviceId != null" >
+        DEVICE_ID,
+      </if>
+      <if test="sourceAddress != null" >
+        SOURCE_ADDRESS,
+      </if>
+      <if test="targetAddress != null" >
+        TARGET_ADDRESS,
+      </if>
+      <if test="command != null" >
+        COMMAND,
+      </if>
+      <if test="paramType != null" >
+        PARAM_TYPE,
+      </if>
+      <if test="data != null" >
+        DATA,
+      </if>
+      <if test="optTime != null" >
+        OPT_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null" >
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceAddress != null" >
+        #{sourceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="targetAddress != null" >
+        #{targetAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="command != null" >
+        #{command,jdbcType=INTEGER},
+      </if>
+      <if test="paramType != null" >
+        #{paramType,jdbcType=INTEGER},
+      </if>
+      <if test="data != null" >
+        #{data,jdbcType=VARCHAR},
+      </if>
+      <if test="optTime != null" >
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.DeviceStatusLog" >
+    update iot_device_status_log
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null" >
+        DEVICE_ID = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceAddress != null" >
+        SOURCE_ADDRESS = #{sourceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="targetAddress != null" >
+        TARGET_ADDRESS = #{targetAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="command != null" >
+        COMMAND = #{command,jdbcType=INTEGER},
+      </if>
+      <if test="paramType != null" >
+        PARAM_TYPE = #{paramType,jdbcType=INTEGER},
+      </if>
+      <if test="data != null" >
+        DATA = #{data,jdbcType=VARCHAR},
+      </if>
+      <if test="optTime != null" >
+        OPT_TIME = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.DeviceStatusLog" >
+    update iot_device_status_log
+    set NAME = #{name,jdbcType=VARCHAR},
+      DEVICE_ID = #{deviceId,jdbcType=VARCHAR},
+      SOURCE_ADDRESS = #{sourceAddress,jdbcType=VARCHAR},
+      TARGET_ADDRESS = #{targetAddress,jdbcType=VARCHAR},
+      COMMAND = #{command,jdbcType=INTEGER},
+      PARAM_TYPE = #{paramType,jdbcType=INTEGER},
+      DATA = #{data,jdbcType=VARCHAR},
+      OPT_TIME = #{optTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

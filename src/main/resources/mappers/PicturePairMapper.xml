@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.PicturePairMapper">
+    <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.Device">
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="MANUFACTURER_ID" property="manufacturerId" jdbcType="VARCHAR" />
+        <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="CHANNEL_TYPE" property="channelType" jdbcType="INTEGER" />
+        <result column="PARAM_TYPE" property="paramType" jdbcType="INTEGER" />
+        <result column="UNIT_CODE" property="unitCode" jdbcType="INTEGER" />
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+        <result column="RESERVED" property="reserved" jdbcType="INTEGER" />
+        <result column="PICTURE_ID" property="pictureId" jdbcType="VARCHAR" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+        <result column="DATA" property="data" jdbcType="VARCHAR"/>
+        <association column="PICTURE_ID" property="devicePicture" select="com.ztgm.iot.dao.DevicePictureMapper.selectByPrimaryKey"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.ztgm.iot.pojo.Device" extends="BaseResultMap">
+        <result column="DEVICE_ICO" property="deviceIco" jdbcType="LONGVARBINARY"/>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        ID, MANUFACTURER_ID, DEVICE_NO, NAME, CHANNEL_TYPE, PARAM_TYPE, UNIT_CODE, ADDRESS,
+        RESERVED, PICTURE_ID, CREATE_DATE, CREATER
+    </sql>
+    <select id="findAllDevice" resultMap="BaseResultMap">
+        select * from iot_device;
+    </select>
+
+    <update id="submitPictureChange">
+        UPDATE iot_device SET PICTURE_ID = #{pictureId}
+        WHERE ID = #{deviceId}
+    </update>
+</mapper>

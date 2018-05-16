@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.DeviceMapper">
+    <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.Device">
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="MANUFACTURER_ID" property="manufacturerId" jdbcType="VARCHAR" />
+        <result column="DEVICE_NO" property="deviceNo" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="CHANNEL_TYPE" property="channelType" jdbcType="INTEGER" />
+        <result column="PARAM_TYPE" property="paramType" jdbcType="INTEGER" />
+        <result column="UNIT_CODE" property="unitCode" jdbcType="INTEGER" />
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+        <result column="RESERVED" property="reserved" jdbcType="INTEGER" />
+        <result column="PICTURE_ID" property="pictureId" jdbcType="VARCHAR" />
+        <result column="GATEWAY_ID" property="gatewayId" jdbcType="VARCHAR" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+        <result column="DATA" property="data" jdbcType="VARCHAR"/>
+        <association property="devicePicture" javaType="com.ztgm.iot.pojo.DevicePicture">
+            <id column="PICTURE_ID" property="id" jdbcType="VARCHAR" />
+            <result column="PICTURE_NAME" property="pictureName" jdbcType="VARCHAR" />
+            <result column="PICTURE_CODE" property="pictureCode" jdbcType="VARCHAR" />
+            <result column="APP_PICTURE_OPEN" property="appPictureOpen" jdbcType="VARCHAR" />
+            <result column="APP_PICTURE_CLOSE" property="appPictureClose" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.ztgm.iot.pojo.Device" extends="BaseResultMap">
+        <result column="DEVICE_ICO" property="deviceIco" jdbcType="LONGVARBINARY"/>
+    </resultMap>
+    <sql id="Base_Column_List" >
+    ID, MANUFACTURER_ID, DEVICE_NO, NAME, CHANNEL_TYPE, PARAM_TYPE, UNIT_CODE, ADDRESS,
+    RESERVED, PICTURE_ID, GATEWAY_ID, CREATE_DATE, CREATER
+  </sql>
+    <sql id="Blob_Column_List">
+    DEVICE_ICO
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from iot_device
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByAddress" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from iot_device
+        where ADDRESS = #{param1} AND GATEWAY_ID = #{param2}
+    </select>
+
+    <select id="selectBygetWayIdAndAddress" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from iot_device
+        where GATEWAY_ID = #{param1}AND ADDRESS = #{param2}
+    </select>
+
+
+
+    <select id="deviceList" resultMap="BaseResultMap">
+        SELECT
+	iot_device.*,
+	iot_device_picture.PICTURE_NAME,
+	iot_device_picture.PICTURE_CODE,
+	iot_device_picture.APP_PICTURE_OPEN,
+	iot_device_picture.APP_PICTURE_CLOSE
+FROM
+	(
+		SELECT
+			iot_device.*, iot_device_status_log.`DATA`
+		FROM
+			iot_device,
+			(
+        SELECT
+        a.*
+        FROM
+        iot_device_status_log a
+        WHERE
+        NOT EXISTS (
+        SELECT
+        *
+        FROM
+        iot_device_status_log b
+        WHERE
+        b.DEVICE_ID = a.DEVICE_ID
+        AND b.OPT_TIME > a.OPT_TIME
+        )
+			) iot_device_status_log
+		WHERE
+			iot_device_status_log.DEVICE_ID = iot_device.ID
+	) iot_device
+        INNER JOIN iot_group_device ON iot_group_device.DEVICE_ID = iot_device.ID,
+	iot_device_picture
+WHERE
+	iot_device_picture.ID = iot_device.PICTURE_ID AND iot_group_device.GROUP_ID in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByDeviceId" resultMap="BaseResultMap" parameterType="java.lang.String">
+       SELECT
+	iot_device.*,
+	iot_device_picture.PICTURE_NAME,
+	iot_device_picture.PICTURE_CODE,
+	iot_device_picture.APP_PICTURE_OPEN,
+	iot_device_picture.APP_PICTURE_CLOSE
+FROM
+	(
+		SELECT
+			iot_device.*, iot_device_status_log.`DATA`
+		FROM
+			iot_device,
+			(
+				SELECT
+	a.*
+FROM
+	iot_device_status_log a
+WHERE
+	NOT EXISTS (
+		SELECT
+			*
+		FROM
+			iot_device_status_log b
+		WHERE
+			b.DEVICE_ID = a.DEVICE_ID
+		AND b.OPT_TIME > a.OPT_TIME
+	)
+			) iot_device_status_log
+		WHERE
+			iot_device_status_log.DEVICE_ID = iot_device.ID
+	) iot_device,
+	iot_device_picture
+WHERE
+	iot_device_picture.ID = iot_device.PICTURE_ID AND iot_device.ID = #{deviceid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAllUserByDevId" parameterType="java.lang.String" resultType="java.lang.String">
+        select distinct gu.USER_ID  from  iot_group_device gd
+        join iot_group_user gu on gd.GROUP_ID=gu.GROUP_ID
+        where gd.DEVICE_ID= #{devId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from iot_device
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.ztgm.iot.pojo.Device" >
+        insert into iot_device (ID, MANUFACTURER_ID, DEVICE_NO,
+        NAME, CHANNEL_TYPE, PARAM_TYPE,
+        UNIT_CODE, ADDRESS, RESERVED,
+        PICTURE_ID, GATEWAY_ID, CREATE_DATE,
+        CREATER, DEVICE_ICO)
+        values (#{id,jdbcType=VARCHAR}, #{manufacturerId,jdbcType=VARCHAR}, #{deviceNo,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR}, #{channelType,jdbcType=INTEGER}, #{paramType,jdbcType=INTEGER},
+        #{unitCode,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{reserved,jdbcType=INTEGER},
+        #{pictureId,jdbcType=VARCHAR}, #{gatewayId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+        #{creater,jdbcType=VARCHAR}, #{deviceIco,jdbcType=LONGVARBINARY})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.Device" >
+        insert into iot_device
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                ID,
+            </if>
+            <if test="manufacturerId != null" >
+                MANUFACTURER_ID,
+            </if>
+            <if test="deviceNo != null" >
+                DEVICE_NO,
+            </if>
+            <if test="name != null" >
+                NAME,
+            </if>
+            <if test="channelType != null" >
+                CHANNEL_TYPE,
+            </if>
+            <if test="paramType != null" >
+                PARAM_TYPE,
+            </if>
+            <if test="unitCode != null" >
+                UNIT_CODE,
+            </if>
+            <if test="address != null" >
+                ADDRESS,
+            </if>
+            <if test="reserved != null" >
+                RESERVED,
+            </if>
+            <if test="pictureId != null" >
+                PICTURE_ID,
+            </if>
+            <if test="gatewayId != null" >
+                GATEWAY_ID,
+            </if>
+            <if test="createDate != null" >
+                CREATE_DATE,
+            </if>
+            <if test="creater != null" >
+                CREATER,
+            </if>
+            <if test="deviceIco != null" >
+                DEVICE_ICO,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="manufacturerId != null" >
+                #{manufacturerId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null" >
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="channelType != null" >
+                #{channelType,jdbcType=INTEGER},
+            </if>
+            <if test="paramType != null" >
+                #{paramType,jdbcType=INTEGER},
+            </if>
+            <if test="unitCode != null" >
+                #{unitCode,jdbcType=INTEGER},
+            </if>
+            <if test="address != null" >
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="reserved != null" >
+                #{reserved,jdbcType=INTEGER},
+            </if>
+            <if test="pictureId != null" >
+                #{pictureId,jdbcType=VARCHAR},
+            </if>
+            <if test="gatewayId != null" >
+                #{gatewayId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null" >
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceIco != null" >
+                #{deviceIco,jdbcType=LONGVARBINARY},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.Device" >
+        update iot_device
+        <set >
+            <if test="manufacturerId != null" >
+                MANUFACTURER_ID = #{manufacturerId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null" >
+                DEVICE_NO = #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="channelType != null" >
+                CHANNEL_TYPE = #{channelType,jdbcType=INTEGER},
+            </if>
+            <if test="paramType != null" >
+                PARAM_TYPE = #{paramType,jdbcType=INTEGER},
+            </if>
+            <if test="unitCode != null" >
+                UNIT_CODE = #{unitCode,jdbcType=INTEGER},
+            </if>
+            <if test="address != null" >
+                ADDRESS = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="reserved != null" >
+                RESERVED = #{reserved,jdbcType=INTEGER},
+            </if>
+            <if test="pictureId != null" >
+                PICTURE_ID = #{pictureId,jdbcType=VARCHAR},
+            </if>
+            <if test="gatewayId != null" >
+                GATEWAY_ID = #{gatewayId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null" >
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceIco != null" >
+                DEVICE_ICO = #{deviceIco,jdbcType=LONGVARBINARY},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ztgm.iot.pojo.Device" >
+        update iot_device
+        set MANUFACTURER_ID = #{manufacturerId,jdbcType=VARCHAR},
+        DEVICE_NO = #{deviceNo,jdbcType=VARCHAR},
+        NAME = #{name,jdbcType=VARCHAR},
+        CHANNEL_TYPE = #{channelType,jdbcType=INTEGER},
+        PARAM_TYPE = #{paramType,jdbcType=INTEGER},
+        UNIT_CODE = #{unitCode,jdbcType=INTEGER},
+        ADDRESS = #{address,jdbcType=VARCHAR},
+        RESERVED = #{reserved,jdbcType=INTEGER},
+        PICTURE_ID = #{pictureId,jdbcType=VARCHAR},
+        GATEWAY_ID = #{gatewayId,jdbcType=VARCHAR},
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        DEVICE_ICO = #{deviceIco,jdbcType=LONGVARBINARY}
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.Device" >
+        update iot_device
+        set MANUFACTURER_ID = #{manufacturerId,jdbcType=VARCHAR},
+        DEVICE_NO = #{deviceNo,jdbcType=VARCHAR},
+        NAME = #{name,jdbcType=VARCHAR},
+        CHANNEL_TYPE = #{channelType,jdbcType=INTEGER},
+        PARAM_TYPE = #{paramType,jdbcType=INTEGER},
+        UNIT_CODE = #{unitCode,jdbcType=INTEGER},
+        ADDRESS = #{address,jdbcType=VARCHAR},
+        RESERVED = #{reserved,jdbcType=INTEGER},
+        PICTURE_ID = #{pictureId,jdbcType=VARCHAR},
+        GATEWAY_ID = #{gatewayId,jdbcType=VARCHAR},
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR}
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

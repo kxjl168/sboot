@@ -1,0 +1,494 @@
+a {
+    text-decoration: none;
+    underline: none;
+}
+
+a:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+body {
+    font-family: "微软雅黑";
+}
+
+#wrapper {
+    background: #323232;
+}
+
+/* 头部样式*/
+.navbar-static-top {
+    background: #1cb09a;
+}
+
+.dropdown a {
+    color: #FFFFFF;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+    background-color: #10a18b;
+}
+
+.nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
+    background-color: #10a18b;
+}
+
+.navbar-default {
+    border-color: #008c77;
+}
+
+/* 左边样式*/
+.navbar-brand {
+    padding: 2px 0px 0px 10px;
+}
+
+.navbar-collapse {
+    background: #323232;
+    height: 1080px;
+}
+
+.navbar-collapse ul {
+    margin-left: 0;
+}
+
+.sidebar {
+    margin-top: 56px;
+}
+
+.sidebar ul li {
+    border-bottom: 1px solid #323232;
+}
+
+#side-menu li a {
+    color: #d2d2d2;
+}
+
+#side-menu li:hover a {
+    color: #FFFFFF;
+}
+
+#side-menu li a {
+    color: #FFFFFF;
+}
+
+.sidebar ul li a.active {
+    background-color: #1cb09a;
+}
+
+.collapse {
+    background: #242424;
+}
+
+/* 中间上部分位置样式*/
+.row {
+    margin: 0px;
+    max-width: 100%;
+}
+
+.panel {
+    padding: 0;
+}
+
+#page-wrapper {
+    background-color: #e9e9e9;
+    padding: 0px;
+}
+
+h1 {
+    font-size: 14px;
+    color: #888888;
+    display: inline-block;
+    text-align: center;
+}
+
+.page-header {
+    margin: 14px 0;
+    border-bottom: 0;
+    padding-bottom: 0;
+    color: #333333;
+
+}
+
+.page-header span {
+    color: #1cb09a;
+}
+
+.wzbj {
+    width: 100%;
+    height: 42px;
+    background: #e4e3e3;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #dddddd;
+}
+
+embed {
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+}
+
+.thumbnail {
+    height: 150px;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.text-success {
+    color: #333333;
+    float: left;
+    /*margin-top: 95px;*/
+    margin-left: 20px;
+    line-height: 40px;
+}
+
+.ys {
+    font-size: 60px;
+    color: #999999;
+    border-radius: 8px;
+    line-height: 40px;
+}
+
+.ys2 {
+    font-size: 60px;
+    color: #999999;
+    border-radius: 8px;
+    line-height: 40px;
+}
+
+.tubiao {
+    margin-left: 15px;
+    margin-right: 15px;
+    display: block;
+    float: left;
+}
+
+.opencolor {
+    color: #fb6e56;
+    border: 1px solid #fb6e56;
+}
+
+.lista .caption {
+    padding: 0;
+}
+
+.lista {
+    height: 80px;
+}
+
+.lista > .switch {
+    margin-right: 15px;
+}
+
+.row .row {
+    margin: 0;
+}
+
+.icon {
+    font-size: 30px;
+    line-height: 40px;
+    float: right;
+    padding-left: 8px;
+    color: #999999;
+}
+
+.opentext {
+    margin-right: 8px;
+    font-size: 14px;
+    color: #666666;
+}
+
+.panel-heading {
+    width: 100%;
+    height: 42px;
+    padding: 0;
+}
+
+.panel-default > .panel-heading {
+    background-color: #d8d8d8;
+}
+
+.header {
+    width: 800px;
+    color: #333333;
+    font-size: 16px;
+    line-height: 40px;
+    margin-left: 15px;
+}
+
+.panel-body {
+    padding: 15px 0px 15px 0px;
+}
+
+.btn-default {
+    width: 80px;
+
+    color: #FFFFFF;
+    background-color: #1cb09a;
+    font-size: 14px;
+    border-color: #1cb09a;
+}
+
+.btn-default:hover {
+    color: #FFFFFF;
+    background-color: #008c77;
+    border-color: #008c77;
+}
+
+.btn-default:active {
+    color: #FFFFFF;
+    background-color: #008c77;
+    border-color: #008c77;
+}
+
+.btn-default:active:focus {
+    color: #FFFFFF;
+    background-color: #008c77;
+    border-color: #008c77;
+}
+
+.delect > .btn-default {
+    background-color: #fb6e56;
+    border-color: #fb6e56;
+}
+
+.delect > .btn-default:hover {
+    background-color: #dd4228;
+    border-color: #dd4228;
+}
+
+.switch {
+    float: right;
+    margin-bottom: 0;
+}
+
+.switch label {
+    height: 1.3rem;
+    width: 3.0rem;
+}
+
+.switch label:after {
+    height: 1rem;
+    width: 1rem;
+    left: .2rem;
+    top: .13rem;
+}
+
+input[type="checkbox"] + label {
+    vertical-align: middle;
+}
+
+.switch input:checked + label:after {
+    left: 1.8rem;
+}
+
+.switch input:checked + label {
+    background: #1cb09a;
+}
+
+.switch label {
+    background: #999;
+}
+
+.switch input {
+    top: 0;
+}
+
+/* 中间设备调光灯样式*/
+
+.ui-slider-handle {
+    width: 10px;
+    height: 16px;
+    border: 1px solid #12a690;
+    background: #00cb9e;
+    border-radius: 4px;
+    position: absolute;
+    left: -2px;
+    top: -5px;
+    cursor: pointer;
+}
+
+.scale {
+    background-repeat: repeat-x;
+    background-position: 0 100%;
+    background-color: #E4E4E4;
+    border-left: 1px #83BBD9 solid;
+    width: 100px;
+    height: 8px;
+    position: relative;
+    font-size: 0px;
+    border-radius: 3px;
+    float: left;
+}
+
+.scale div {
+    background-repeat: repeat-x;
+    background-color: #00cb9e;
+    width: 0px;
+    position: absolute;
+    height: 8px;
+    left: 0;
+    bottom: 0;
+}
+
+.shuzhi {
+    color: #666666;
+    font-weight: bold;
+    float: left;
+    position: relative;
+    left: 112px;
+    top: -23px;
+}
+
+input[type="text"] {
+    width: 60px;
+    border: 0;
+    box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);
+}
+
+.tiaojie {
+    margin-right: 78px;
+    float: right;
+    height: 15px;
+    margin-top: 18px;
+
+}
+
+/* 中间修改样式*/
+.namexg > .form-control:focus {
+    box-shadow: none;
+    border: 1px solid #13d1be;
+    background: #ffffff;
+
+}
+
+.namexg > .form-control {
+    width: 340px;
+    height: 38px;
+    border-radius: 4px;
+    border: 1px solid #CCCCCC;
+}
+
+.namexg > .cj {
+    width: 300px;
+}
+
+.namexg {
+    margin-top: 15px;
+
+}
+
+.gjc {
+    margin-top: 0px;
+    margin-bottom: 15px;
+    height: 50px;
+    padding-left: 26px;
+}
+
+.name01 {
+    float: left;
+    line-height: 34px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+.btncommon > .btn-default {
+    width: 200px;
+}
+
+.sb {
+    padding-top: 15px;
+    overflow-y: auto;
+    height: 680px;
+}
+
+.add {
+    margin-top: 50px;
+}
+
+.btnzj {
+    text-align: center;
+    padding-top: 240px;
+}
+
+.list {
+    width: 500px;
+    background: #ffffff;
+    border-color: #a6e7de;
+}
+
+.list2 {
+    background: #dbf8f4;
+    border-bottom: 1px solid #a6e7de;
+    text-align: center;
+}
+
+.list2 > .switch {
+    margin-top: 6px;
+    margin-right: 15px;
+}
+
+input[type="checkbox"] {
+    margin: 0 0 0 0;
+}
+
+.checknew {
+    position:relative;
+    float: left;
+    margin-left: 15px;
+    /*margin-top: 6px;*/
+    background-image: url(/img/xuanze1.png);
+    background-repeat: no-repeat;
+    background-position: 0px 10px;
+    cursor: pointer;
+    z-index: 999;
+}
+
+.checkboxclass {
+    position:relative;
+    width: 20px;
+    height: 20px;
+    margin-top: 10px !important;
+    z-index: -999;
+    opacity: 0;
+    cursor: pointer;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+}
+
+
+
+.oncheck {
+    background-image: url(/img/xuanze2.png);
+}
+
+.headerlist {
+    width: 100%;
+    line-height: 42px;
+    text-align: center;
+}
+
+.kg {
+    font-size: 10px;
+    position: absolute;
+    top: 1px;
+}
+
+.OFF {
+    color: #666666;
+    left: -27px;
+}
+
+.rg {
+    color: #666666;
+    left: -27px;
+}
+
+.ON {
+    color: #FFFFFF;
+    left: -42px;
+    display: none;
+}
+
+.lista a {
+    cursor: default;
+}

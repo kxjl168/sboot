@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.GroupMapper" >
+  <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.Group" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, NAME, PARENT_ID, CREATE_DATE, CREATER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from iot_group
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <select id="selectBUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  SELECT
+    iot_group.ID,
+    iot_group.`NAME`,
+    iot_group.CREATE_DATE,
+    iot_group.CREATER
+    FROM
+    iot_group
+    INNER JOIN iot_group_user ON iot_group_user.GROUP_ID = iot_group.ID
+    INNER JOIN iot_user ON iot_group_user.USER_ID = iot_user.ID
+    WHERE
+    iot_user.ID = #{uid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectBUserId2" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT
+    iot_group.ID,
+    iot_group.`NAME`,
+    iot_group.CREATE_DATE,
+    iot_group.CREATER
+    FROM
+    iot_group
+    INNER JOIN iot_group_user ON iot_group_user.GROUP_ID = iot_group.ID
+    INNER JOIN iot_user ON iot_group_user.USER_ID = iot_user.ID
+    <where>
+      <if test="uid!=null">
+        and iot_user.ID = #{uid,jdbcType=VARCHAR}
+      </if>
+
+      <if test="groupName!=null">
+        and iot_group.NAME = #{groupName,jdbcType=VARCHAR}
+      </if>
+
+    </where>
+
+  </select>
+
+
+  <select id="selectGroupIdByGatewayId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    iot_group.ID,
+    iot_group.`NAME`,
+    iot_group.CREATE_DATE,
+    iot_group.CREATER
+    from iot_gateway_group
+    INNER JOIN iot_gateway ON iot_gateway_group.GATEWAY_ID = iot_gateway.ID
+    INNER JOIN iot_group ON iot_gateway_group.GROUP_ID = iot_group.ID
+    WHERE iot_gateway.ID = #{gatewayId,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <!--  查询用户所有区域 (通过组查询) -->
+  <select id="selectUserAllRegions" resultMap="com.ztgm.iot.dao.RegionMapper.BaseResultMap" parameterType="java.lang.String">
+
+    select distinct re.* from iot_group_user gu
+    join iot_group g on gu.GROUP_ID=g.ID
+    join iot_gateway_group gg on (gg.GROUP_ID=g.PARENT_ID or gg.GROUP_ID=g.ID)
+    join iot_region re on re.GATEWAY_ID=gg.GATEWAY_ID
+    where gu.USER_ID=#{userId,jdbcType=VARCHAR}
+
+  </select>
+
+  <!--  查询用户所有设备 (通过组查询) -->
+  <select id="selectUserAllDevices" resultMap="com.ztgm.iot.dao.DeviceMapper.BaseResultMap" parameterType="java.lang.String">
+    SELECT * from (
+      select distinct de.* from iot_group_user gu
+      join iot_group g on gu.GROUP_ID=g.ID
+      join iot_gateway_group gg on (gg.GROUP_ID=g.PARENT_ID or gg.GROUP_ID=g.ID)
+      join iot_gateway_device gd on gd.GATEWAY_ID=gg.GATEWAY_ID
+      join iot_device de on  de.ID=gd.DEVICE_ID
+      where gu.USER_ID=#{userId,jdbcType=VARCHAR}
+    ) dev join iot_device_picture dp on dev.PICTURE_ID=dp.ID
+
+  </select>
+
+  <!--  查询用户 除指定组外的 所有区域  -->
+  <select id="selectUserAllRegionsExGroup" resultMap="com.ztgm.iot.dao.RegionMapper.BaseResultMap" >
+  select * from (
+    select distinct re.* from iot_group_user gu
+    join iot_group g on gu.GROUP_ID=g.ID
+    join iot_gateway_group gg on (gg.GROUP_ID=g.PARENT_ID or gg.GROUP_ID=g.ID)
+    join iot_region re on re.GATEWAY_ID=gg.GATEWAY_ID
+    where gu.USER_ID=#{userId,jdbcType=VARCHAR}
+  ) reg where
+    reg.id not in (select REGION_ID from iot_group_region where GROUP_ID=#{groupId,jdbcType=VARCHAR})
+  </select>
+
+  <!--  查询用户 除指定组外的 所有设备 -->
+  <select id="selectUserAllDevicesExGroup" resultMap="com.ztgm.iot.dao.DeviceMapper.BaseResultMap" >
+    SELECT * from (
+    select distinct de.* from iot_group_user gu
+    join iot_group g on gu.GROUP_ID=g.ID
+    join iot_gateway_group gg on (gg.GROUP_ID=g.PARENT_ID or gg.GROUP_ID=g.ID)
+    join iot_gateway_device gd on gd.GATEWAY_ID=gg.GATEWAY_ID
+    join iot_device de on  de.ID=gd.DEVICE_ID
+    where gu.USER_ID=#{userId,jdbcType=VARCHAR}
+    ) dev join iot_device_picture dp on dev.PICTURE_ID=dp.ID
+where  dev.ID not in ( select DEVICE_ID from iot_group_device  where GROUP_ID=#{groupId,jdbcType=VARCHAR})
+  </select>
+
+  <!--   -->
+  <select id="selectGroupDevices" resultMap="com.ztgm.iot.dao.DeviceMapper.BaseResultMap" parameterType="java.lang.String">
+    select d.*,dp.* from iot_group_device gd
+    join iot_device d on gd.DEVICE_ID=d.ID
+    join iot_device_picture dp on d.PICTURE_ID=dp.ID
+    where gd.GROUP_ID=#{groupId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectGroupRegions" resultMap="com.ztgm.iot.dao.RegionMapper.BaseResultMap" parameterType="java.lang.String">
+    select r.* from iot_group_region gr
+    join iot_region r on gr.REGION_ID =r.ID
+    where gr.GROUP_ID=#{groupId,jdbcType=VARCHAR}
+  </select>
+
+  <!--  查询用户与网关 关联组ID -->
+  <select id="selectUserGatewayGroup" resultType="java.lang.String" parameterType="java.lang.String">
+
+    select distinct gg.GROUP_ID from (
+    select g.ID  as ID from iot_group_user gu
+    join iot_group g on gu.GROUP_ID=g.ID
+     where gu.USER_ID=#{userId,jdbcType=VARCHAR}
+    union
+    select g.PARENT_ID as ID from iot_group_user gu
+    join iot_group g on gu.GROUP_ID=g.ID
+     where gu.USER_ID=#{userId,jdbcType=VARCHAR}
+    ) ug
+    join iot_gateway_group gg on gg.GROUP_ID=ug.ID
+
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_group
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.iot.pojo.Group" >
+      insert into iot_group (ID, NAME, PARENT_ID,
+      CREATE_DATE, CREATER)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.Group" >
+    insert into iot_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.Group" >
+    update iot_group
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.Group" >
+    update iot_group
+    set NAME = #{name,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      CREATER = #{creater,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

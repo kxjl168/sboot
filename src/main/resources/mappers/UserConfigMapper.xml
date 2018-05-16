@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.UserConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.UserConfig" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ztgm.iot.pojo.UserConfigWithBLOBs" extends="BaseResultMap" >
+    <result column="CURRENT_CONFIG" property="currentConfig" jdbcType="LONGVARBINARY" />
+    <result column="PREVIOUS_CONFIG" property="previousConfig" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, UPDATE_DATE
+  </sql>
+  <sql id="Blob_Column_List" >
+    CURRENT_CONFIG, PREVIOUS_CONFIG
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from iot_user_config
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_user_config
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.iot.pojo.UserConfigWithBLOBs" >
+    insert into iot_user_config (ID, USER_ID, UPDATE_DATE, 
+      CURRENT_CONFIG, PREVIOUS_CONFIG
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{currentConfig,jdbcType=LONGVARBINARY}, #{previousConfig,jdbcType=LONGVARBINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.UserConfigWithBLOBs" >
+    insert into iot_user_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="updateDate != null" >
+        UPDATE_DATE,
+      </if>
+      <if test="currentConfig != null" >
+        CURRENT_CONFIG,
+      </if>
+      <if test="previousConfig != null" >
+        PREVIOUS_CONFIG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentConfig != null" >
+        #{currentConfig,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="previousConfig != null" >
+        #{previousConfig,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.UserConfigWithBLOBs" >
+    update iot_user_config
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentConfig != null" >
+        CURRENT_CONFIG = #{currentConfig,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="previousConfig != null" >
+        PREVIOUS_CONFIG = #{previousConfig,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ztgm.iot.pojo.UserConfigWithBLOBs" >
+    update iot_user_config
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      CURRENT_CONFIG = #{currentConfig,jdbcType=LONGVARBINARY},
+      PREVIOUS_CONFIG = #{previousConfig,jdbcType=LONGVARBINARY}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.UserConfig" >
+    update iot_user_config
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

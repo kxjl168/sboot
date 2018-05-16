@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.UserDeviceLogMapper" >
+  <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.UserDeviceLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="DEVICE_ID" property="deviceId" jdbcType="VARCHAR" />
+    <result column="OPT_TIME" property="optTime" jdbcType="TIMESTAMP" />
+    <result column="ACTION" property="action" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, DEVICE_ID, OPT_TIME, ACTION, CREATE_DATE, CREATER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_user_device_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectLatestUserOper" resultMap="BaseResultMap">
+    select l1.* from iot_user_device_log l1
+    join
+    (select USER_ID,DEVICE_ID,max(OPT_TIME) optime from iot_user_device_log group by USER_ID,DEVICE_ID)
+    l2 on l1.USER_ID=l2.USER_ID and l1.DEVICE_ID =l2.DEVICE_ID and l1.OPT_TIME=l2.optime
+    where CREATE_DATE>#{fromDate,jdbcType=TIMESTAMP} and l1.USER_ID =#{userId,jdbcType=VARCHAR}
+  <if test="data==0">
+    and  l1.ACTION='0'
+  </if>
+    <if test="data!=0">
+      and  l1.ACTION !='0'
+    </if>
+  order by CREATE_DATE desc
+  limit 20
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_user_device_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.iot.pojo.UserDeviceLog" >
+    insert into iot_user_device_log (ID, USER_ID, DEVICE_ID, 
+      OPT_TIME, ACTION, CREATE_DATE, 
+      CREATER)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, 
+      #{optTime,jdbcType=TIMESTAMP}, #{action,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{creater,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.UserDeviceLog" >
+    insert into iot_user_device_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="deviceId != null" >
+        DEVICE_ID,
+      </if>
+      <if test="optTime != null" >
+        OPT_TIME,
+      </if>
+      <if test="action != null" >
+        ACTION,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null" >
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="optTime != null" >
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.UserDeviceLog" >
+    update iot_user_device_log
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null" >
+        DEVICE_ID = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="optTime != null" >
+        OPT_TIME = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="action != null" >
+        ACTION = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.UserDeviceLog" >
+    update iot_user_device_log
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      DEVICE_ID = #{deviceId,jdbcType=VARCHAR},
+      OPT_TIME = #{optTime,jdbcType=TIMESTAMP},
+      ACTION = #{action,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      CREATER = #{creater,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

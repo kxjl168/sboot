@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.WelcomeMapper">
+    <resultMap id="NoticeResultMap" type="com.ztgm.iot.pojo.Notice">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="MSG" property="msg" jdbcType="VARCHAR"/>
+        <result column="TITLE" property="title" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="rowno" property="rowNo" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Notice_Column_List">
+        notice.ID, notice.USER_ID, notice.MSG, notice.TITLE,
+        notice.STATUS, date_format(notice.CREATE_DATE, "%Y-%m-%d") AS CREATE_DATE, notice.CREATER
+    </sql>
+
+    <select id="getGroupIdByUserId" resultType="java.lang.String">
+    SELECT GROUP_ID
+    FROM iot_group_user
+    WHERE USER_ID = #{userId}
+  </select>
+
+    <select id="getHrefCount" resultType="java.util.HashMap">
+        SELECT
+        (
+        SELECT count(1) FROM iot_group_device device WHERE device.GROUP_ID IN
+        <foreach collection="list" item="groupId" open="(" close=")" separator="," index="index">
+            #{groupId}
+        </foreach>
+        ) deviceManager,
+        (
+        SELECT count(1) FROM iot_combination combination WHERE combination.GROUP_ID IN
+        <foreach collection="list" item="groupId" open="(" close=")" separator="," index="index">
+            #{groupId}
+        </foreach>
+        ) sceneManager,
+        (
+        SELECT count(1) FROM iot_region region WHERE region.GROUP_ID IN
+        <foreach collection="list" item="groupId" open="(" close=")" separator="," index="index">
+            #{groupId}
+        </foreach>
+        ) regionManager,
+        (
+        SELECT count(1) FROM iot_warning warning WHERE warning.GROUP_ID IN
+        <foreach collection="list" item="groupId" open="(" close=")" separator="," index="index">
+            #{groupId}
+        </foreach>
+        ) deviceWarning
+        FROM dual;
+    </select>
+
+    <select id="getUserNotice" resultMap="NoticeResultMap">
+        SELECT @rowno:=@rowno+1 as rowno ,
+        <include refid="Notice_Column_List"/>
+        FROM iot_notice notice,(select @rowno:=0) t
+        WHERE notice.USER_ID = #{userId}
+        ORDER BY notice.STATUS ASC ,notice.CREATE_DATE DESC;
+    </select>
+
+    <select id="getRegionLogCountList" resultType="java.util.HashMap">
+        SELECT
+          date_format(CREATE_DATE_TABLE.create_date, "%m") month,
+          count(1)                       count
+        FROM (SELECT
+                date_format(CREATE_DATE, "%m") AS CREATE_MONTH,
+                CREATE_DATE,
+                REGION_ID
+              FROM iot_user_region_log log
+              WHERE date_format(log.CREATE_DATE, "%Y") = #{year}) CREATE_DATE_TABLE
+        JOIN iot_region region ON region.ID = CREATE_DATE_TABLE.REGION_ID
+        WHERE region.GROUP_ID IN
+        <foreach collection="groupIdList" item="groupId" open="(" close=")" separator="," index="index">
+            #{groupId}
+        </foreach>
+        GROUP BY CREATE_DATE_TABLE.CREATE_MONTH
+        ORDER BY month ASC;
+    </select>
+
+    <select id="getSceneLogCountList" resultType="java.util.HashMap">
+        SELECT
+        date_format(CREATE_DATE_TABLE.create_date, "%m") month,
+        count(1)                       count
+        FROM (SELECT
+                date_format(CREATE_DATE, "%m") AS CREATE_MONTH,
+                CREATE_DATE,
+                COMBINATION_ID
+              FROM iot_user_scene_log log
+              WHERE date_format(log.CREATE_DATE, "%Y") = #{year}) CREATE_DATE_TABLE
+        JOIN iot_combination combination ON combination.ID = CREATE_DATE_TABLE.COMBINATION_ID
+        WHERE combination.GROUP_ID IN
+        <foreach collection="groupIdList" item="groupId" open="(" close=")" separator="," index="index">
+            #{groupId}
+        </foreach>
+        GROUP BY CREATE_DATE_TABLE.CREATE_MONTH
+        ORDER BY month ASC;
+    </select>
+
+    <select id="getRegionYearList" resultType="java.lang.String">
+      SELECT DISTINCT date_format(log.CREATE_DATE, "%Y") CREATE_YEAR
+      FROM iot_user_region_log log
+      LEFT JOIN iot_region region ON region.ID = log.REGION_ID
+      WHERE region.GROUP_ID IN
+        <foreach collection="list" item="groupId" open="(" close=")" separator="," index="index">
+            #{groupId}
+        </foreach>
+    </select>
+
+    <select id="getSceneYearList" resultType="java.lang.String">
+        SELECT DISTINCT date_format(log.CREATE_DATE, "%Y") CREATE_YEAR
+        FROM iot_user_scene_log log
+        LEFT JOIN iot_combination combination ON combination.ID = log.COMBINATION_ID
+        WHERE combination.GROUP_ID IN
+        <foreach collection="list" item="groupId" open="(" close=")" separator="," index="index">
+            #{groupId}
+        </foreach>
+    </select>
+
+    <select id="getDeviceStatusCountList" resultType="java.util.HashMap">
+      SELECT log.PARAM_TYPE paramType, log.data, count(1) count
+      FROM iot_device_status_log log
+      JOIN iot_group_device relation
+      ON relation.DEVICE_ID = log.DEVICE_ID
+      WHERE GROUP_ID IN
+        <foreach collection="list" item="groupId" open="(" close=")" separator="," index="index">
+            #{groupId}
+        </foreach>
+      GROUP BY log.PARAM_TYPE, log.DATA;
+    </select>
+
+    <update id="updateNoticeRead">
+        UPDATE iot_notice SET STATUS = 1
+        WHERE ID = #{noticeId}
+    </update>
+</mapper>

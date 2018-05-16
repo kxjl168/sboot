@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.UserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.UserInfo" >
+    <id column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="USER_EMAIL" property="userEmail" jdbcType="VARCHAR" />
+    <result column="USER_CARD_TYPE" property="userCardType" jdbcType="VARCHAR" />
+    <result column="USER_CARD_ID" property="userCardId" jdbcType="VARCHAR" />
+    <result column="USER_COUNTRY_CODE" property="userCountryCode" jdbcType="VARCHAR" />
+    <result column="USER_PROVINCE" property="userProvince" jdbcType="VARCHAR" />
+    <result column="USER_CITY" property="userCity" jdbcType="VARCHAR" />
+    <result column="USER_TOWN" property="userTown" jdbcType="VARCHAR" />
+    <result column="USER_TEL" property="userTel" jdbcType="VARCHAR" />
+    <result column="USER_CELLPHONE" property="userCellphone" jdbcType="VARCHAR" />
+    <result column="HOME_ADDRESS" property="homeAddress" jdbcType="VARCHAR" />
+    <result column="EXPRESS_ADDRESS" property="expressAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    USER_ID, USER_EMAIL, USER_CARD_TYPE, USER_CARD_ID, USER_COUNTRY_CODE, USER_PROVINCE, 
+    USER_CITY, USER_TOWN, USER_TEL, USER_CELLPHONE, HOME_ADDRESS, EXPRESS_ADDRESS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_user_info
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_user_info
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.iot.pojo.UserInfo" >
+    insert into iot_user_info (USER_ID, USER_EMAIL, USER_CARD_TYPE, 
+      USER_CARD_ID, USER_COUNTRY_CODE, USER_PROVINCE, 
+      USER_CITY, USER_TOWN, USER_TEL, 
+      USER_CELLPHONE, HOME_ADDRESS, EXPRESS_ADDRESS
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userCardType,jdbcType=VARCHAR}, 
+      #{userCardId,jdbcType=VARCHAR}, #{userCountryCode,jdbcType=VARCHAR}, #{userProvince,jdbcType=VARCHAR}, 
+      #{userCity,jdbcType=VARCHAR}, #{userTown,jdbcType=VARCHAR}, #{userTel,jdbcType=VARCHAR}, 
+      #{userCellphone,jdbcType=VARCHAR}, #{homeAddress,jdbcType=VARCHAR}, #{expressAddress,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.UserInfo" >
+    insert into iot_user_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="userEmail != null" >
+        USER_EMAIL,
+      </if>
+      <if test="userCardType != null" >
+        USER_CARD_TYPE,
+      </if>
+      <if test="userCardId != null" >
+        USER_CARD_ID,
+      </if>
+      <if test="userCountryCode != null" >
+        USER_COUNTRY_CODE,
+      </if>
+      <if test="userProvince != null" >
+        USER_PROVINCE,
+      </if>
+      <if test="userCity != null" >
+        USER_CITY,
+      </if>
+      <if test="userTown != null" >
+        USER_TOWN,
+      </if>
+      <if test="userTel != null" >
+        USER_TEL,
+      </if>
+      <if test="userCellphone != null" >
+        USER_CELLPHONE,
+      </if>
+      <if test="homeAddress != null" >
+        HOME_ADDRESS,
+      </if>
+      <if test="expressAddress != null" >
+        EXPRESS_ADDRESS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userCardType != null" >
+        #{userCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="userCardId != null" >
+        #{userCardId,jdbcType=VARCHAR},
+      </if>
+      <if test="userCountryCode != null" >
+        #{userCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userProvince != null" >
+        #{userProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="userCity != null" >
+        #{userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="userTown != null" >
+        #{userTown,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userCellphone != null" >
+        #{userCellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="expressAddress != null" >
+        #{expressAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.UserInfo" >
+    update iot_user_info
+    <set >
+      <if test="userEmail != null" >
+        USER_EMAIL = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userCardType != null" >
+        USER_CARD_TYPE = #{userCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="userCardId != null" >
+        USER_CARD_ID = #{userCardId,jdbcType=VARCHAR},
+      </if>
+      <if test="userCountryCode != null" >
+        USER_COUNTRY_CODE = #{userCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userProvince != null" >
+        USER_PROVINCE = #{userProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="userCity != null" >
+        USER_CITY = #{userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="userTown != null" >
+        USER_TOWN = #{userTown,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        USER_TEL = #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userCellphone != null" >
+        USER_CELLPHONE = #{userCellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        HOME_ADDRESS = #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="expressAddress != null" >
+        EXPRESS_ADDRESS = #{expressAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.UserInfo" >
+    update iot_user_info
+    set USER_EMAIL = #{userEmail,jdbcType=VARCHAR},
+      USER_CARD_TYPE = #{userCardType,jdbcType=VARCHAR},
+      USER_CARD_ID = #{userCardId,jdbcType=VARCHAR},
+      USER_COUNTRY_CODE = #{userCountryCode,jdbcType=VARCHAR},
+      USER_PROVINCE = #{userProvince,jdbcType=VARCHAR},
+      USER_CITY = #{userCity,jdbcType=VARCHAR},
+      USER_TOWN = #{userTown,jdbcType=VARCHAR},
+      USER_TEL = #{userTel,jdbcType=VARCHAR},
+      USER_CELLPHONE = #{userCellphone,jdbcType=VARCHAR},
+      HOME_ADDRESS = #{homeAddress,jdbcType=VARCHAR},
+      EXPRESS_ADDRESS = #{expressAddress,jdbcType=VARCHAR}
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>

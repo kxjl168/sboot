@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.RegionMapper" >
+  <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.Region" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+    <result column="GATEWAY_ID" property="gatewayId" jdbcType="VARCHAR" />
+    <result column="GATEWAY_Region_ID" property="gatewayRegionId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DESCR" property="descr" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ztgm.iot.pojo.Region" extends="BaseResultMap" >
+    <result column="IMG" property="img" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, GROUP_ID, GATEWAY_ID, GATEWAY_Region_ID, NAME, DESCR, CREATE_DATE, CREATER
+  </sql>
+  <sql id="Blob_Column_List" >
+    IMG
+  </sql>
+  
+  
+  
+  
+  <delete id="deleteRolePerssion" parameterType="com.ztgm.iot.pojo.Role" >
+    delete from iot_sys_role_permission
+    where sys_role_id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from iot_region
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectBygetWayIdAndRegionId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List"/>
+    ,
+    <include refid="Blob_Column_List"/>
+    from iot_region
+    where GATEWAY_ID = #{param1}AND GATEWAY_Region_ID = #{param2}
+  </select>
+
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_region
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.iot.pojo.Region" >
+    insert into iot_region (ID, GROUP_ID, GATEWAY_ID, 
+      GATEWAY_Region_ID, NAME, DESCR, 
+      CREATE_DATE, CREATER, IMG
+      )
+    values (#{id,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{gatewayId,jdbcType=VARCHAR}, 
+      #{gatewayRegionId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{descr,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{img,jdbcType=LONGVARBINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.Region" >
+    insert into iot_region
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="groupId != null" >
+        GROUP_ID,
+      </if>
+      <if test="gatewayId != null" >
+        GATEWAY_ID,
+      </if>
+      <if test="gatewayRegionId != null" >
+        GATEWAY_Region_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="descr != null" >
+        DESCR,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="img != null" >
+        IMG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayId != null" >
+        #{gatewayId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayRegionId != null" >
+        #{gatewayRegionId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="descr != null" >
+        #{descr,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.Region" >
+    update iot_region
+    <set >
+      <if test="groupId != null" >
+        GROUP_ID = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayId != null" >
+        GATEWAY_ID = #{gatewayId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayRegionId != null" >
+        GATEWAY_Region_ID = #{gatewayRegionId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="descr != null" >
+        DESCR = #{descr,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        IMG = #{img,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ztgm.iot.pojo.Region" >
+    update iot_region
+    set GROUP_ID = #{groupId,jdbcType=VARCHAR},
+      GATEWAY_ID = #{gatewayId,jdbcType=VARCHAR},
+      GATEWAY_Region_ID = #{gatewayRegionId,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      DESCR = #{descr,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      IMG = #{img,jdbcType=LONGVARBINARY}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.Region" >
+    update iot_region
+    set GROUP_ID = #{groupId,jdbcType=VARCHAR},
+      GATEWAY_ID = #{gatewayId,jdbcType=VARCHAR},
+      GATEWAY_Region_ID = #{gatewayRegionId,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      DESCR = #{descr,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      CREATER = #{creater,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztgm.iot.dao.DevicePictureMapper" >
+  <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.DevicePicture" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PICTURE_NAME" property="pictureName" jdbcType="VARCHAR" />
+    <result column="PICTURE_CODE" property="pictureCode" jdbcType="VARCHAR" />
+    <result column="APP_PICTURE_OPEN" property="appPictureOpen" jdbcType="VARCHAR" />
+    <result column="APP_PICTURE_CLOSE" property="appPictureClose" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PICTURE_NAME, PICTURE_CODE, APP_PICTURE_OPEN, APP_PICTURE_CLOSE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_device_picture
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_device_picture
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.iot.pojo.DevicePicture" >
+    insert into iot_device_picture (ID, PICTURE_NAME, PICTURE_CODE, 
+      APP_PICTURE_OPEN, APP_PICTURE_CLOSE)
+    values (#{id,jdbcType=VARCHAR}, #{pictureName,jdbcType=VARCHAR}, #{pictureCode,jdbcType=VARCHAR}, 
+      #{appPictureOpen,jdbcType=VARCHAR}, #{appPictureClose,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.DevicePicture" >
+    insert into iot_device_picture
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="pictureName != null" >
+        PICTURE_NAME,
+      </if>
+      <if test="pictureCode != null" >
+        PICTURE_CODE,
+      </if>
+      <if test="appPictureOpen != null" >
+        APP_PICTURE_OPEN,
+      </if>
+      <if test="appPictureClose != null" >
+        APP_PICTURE_CLOSE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureName != null" >
+        #{pictureName,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureCode != null" >
+        #{pictureCode,jdbcType=VARCHAR},
+      </if>
+      <if test="appPictureOpen != null" >
+        #{appPictureOpen,jdbcType=VARCHAR},
+      </if>
+      <if test="appPictureClose != null" >
+        #{appPictureClose,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.DevicePicture" >
+    update iot_device_picture
+    <set >
+      <if test="pictureName != null" >
+        PICTURE_NAME = #{pictureName,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureCode != null" >
+        PICTURE_CODE = #{pictureCode,jdbcType=VARCHAR},
+      </if>
+      <if test="appPictureOpen != null" >
+        APP_PICTURE_OPEN = #{appPictureOpen,jdbcType=VARCHAR},
+      </if>
+      <if test="appPictureClose != null" >
+        APP_PICTURE_CLOSE = #{appPictureClose,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.DevicePicture" >
+    update iot_device_picture
+    set PICTURE_NAME = #{pictureName,jdbcType=VARCHAR},
+      PICTURE_CODE = #{pictureCode,jdbcType=VARCHAR},
+      APP_PICTURE_OPEN = #{appPictureOpen,jdbcType=VARCHAR},
+      APP_PICTURE_CLOSE = #{appPictureClose,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="findAllPicture" resultMap="BaseResultMap">
+    SELECT * FROM iot_device_picture;
+  </select>
+
+  <select id="selectBydeviceId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT
+     *
+      FROM
+      iot_device_picture
+      INNER JOIN iot_device ON iot_device.PICTURE_ID = iot_device_picture.ID
+      WHERE
+      iot_device.ID = #{deviceId,jdbcType=VARCHAR}
+  </select>
+
+</mapper>
