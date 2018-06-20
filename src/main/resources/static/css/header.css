@@ -1,0 +1,327 @@
+		body{
+			font-family: "微软雅黑";
+			margin: 0 auto;
+		}
+		/*顶部banner*/
+		#header {
+		    background: #f5f5f5;
+		    border: #e1e1e1 solid;
+		    border-width: 1px 0;
+		    height: 29px;
+		    line-height: 28px;
+		    font-size: 13px;
+		}
+		.w1190{
+			width: 1190px;
+			margin: auto;
+		}
+		#header .w1190 dl{
+			margin-top: 4px;
+		}
+		.fl{
+			float: left;
+		}
+		.fl a{
+			color: #333333;
+			text-decoration: none;
+		}
+		.fl a:hover{
+			color: #EE3F40;
+		}
+		.right li:last-child a:hover{
+			color: #333333;
+		}
+		.fl li{
+			padding-left: 10px;
+		}
+	    .left{
+	    	list-style: none;
+	    }
+		.right{
+			list-style: none;
+			float: right;
+		}
+		.w1190 .fl .dlu,.w1190 .fl .sj{
+			color:#F35050;
+		}
+		.login a{ 
+			padding-left: 10px;
+		}
+		.sc{
+			width: 90px;
+			position: relative;
+		}
+		.sc span{
+			float: right;
+		}
+		.sc p{
+			display: none;
+			position: absolute;
+		    width: 90px;
+		    padding: 29px 0 10px 0;
+		    left:0px;
+		    top: -1px;
+		    border: #e1e1e1 solid 1px;
+		    background: #fff;
+		    z-index: 1;
+		    
+		}
+		.sc p a {
+		    padding-left: 13px;
+		    color: #a2a2a2;
+		    line-height: 24px;
+		}
+		.sc p a:hover{
+			color: #333333;
+			text-decoration: underline;
+		}
+		.scfw{
+			position: absolute;
+			z-index: 2;
+		}
+		.scfw img{
+			position: absolute;
+			display: block;
+			left: 60px;
+			top: 10px;	
+		}
+		.sjxd{
+			width: 124px;
+			position: relative;
+		}
+		.sj{
+			z-index: 3;
+			position: relative;
+		}
+		.sjxd p{
+			display: none;
+			position: absolute;
+		    width: 124px;
+		    height: 153px;
+		    padding: 32px 0 10px 20px;
+		    left:0px;
+		    top: -1px;
+		    border: #e1e1e1 solid 1px;
+		    background: #fff;
+		    z-index:2;
+		}
+		
+		/*logo+搜索*/
+		.logo{
+			float: left;
+		}
+		.input-group-addon{
+			background-color: #199ED8;
+			color: #FFFFFF;
+			height: 38px;
+			border: 2px solid #199ED8;
+			width: 98px;
+			font-size: 16px;
+			letter-spacing: 3px;
+		}
+		.form-control{
+			height: 38px;
+			border: 2px solid #199ED8;
+			border-radius: 0;
+		}
+		#search{
+		    float: left;	
+		    margin-left: 78px;
+		}
+		#search dt{
+			width: 660px;
+		}
+		#search dd{
+			padding-top: 6px;	
+		}
+		#search dd a{
+			font-size: 12px;
+			color: #0a0a0a;
+			padding-right: 18px;
+		}
+		.sp{
+			padding-top: 40px;
+			height: 120px;
+		}
+		#txtsearch{
+			width: 410px;
+		}
+		.search-color:hover{
+			color: #FFFFFF;
+		}
+		dt{
+			font-weight: 100;
+		}
+		.cart{
+			float: right;
+			position: relative;
+		}
+		.cart img{
+			border:1px solid #e4e4e4;
+			background: #F8F8F8;	
+		}
+		.wdlu{
+			display: none;
+			position: absolute;
+			width: 324px;
+			height: 70px;
+			background: #ffffff;
+			border:1px solid #e4e4e4;
+			box-shadow: rgba(0,0,0,.2) 0 0 5px;
+			text-align: center;
+			z-index: 99;
+			right: 0;
+		}
+		.wdlu span{
+			color: #666666;
+			font-size: 14px;
+			line-height: 70px;
+		}
+		.wdlu span a{
+			color: #EE3F40;
+			font-size: 14px;
+			text-decoration: underline;
+		}
+	    .zuo{
+	    	float: left;
+	    }
+	    .btn{
+	    	height: 38px;
+	    	border-radius: 0;
+	    }
+	    .mar{
+	    	margin-left: 30px;
+	    }
+	    .cart-number{
+	    	height: 18px;
+		    min-width: 18px;
+		    position: absolute;
+		    top: -9px;
+		    right: -9px;
+	    }
+	    .cart-number p{
+	    	display: block;
+		    height: 18px;
+		    min-width: 12px;
+		    color: #fff;
+		    text-align: center;
+		    padding: 0 3px;
+		    line-height: 18px;
+		    background: #EE3F40;
+		    font-size: 11px;
+		    border-radius: 18px;
+	    }
+	    
+	    /*全部商品分类banner*/
+	    #menu{
+	    	margin-top: 30px;
+	    	height: 40px;
+	    	border-bottom: 2px solid #ff9900;   
+	    }
+	    #menu a{
+	    	text-decoration: none;
+	    }
+	    .menu-box{
+	    	position: relative;
+	    	background: #FFFFFF;
+	    	height: 328px;
+	    	z-index: 10000;
+	    }
+	    .spfl{
+	    	width: 170px;
+	    	height: 40px;
+	    	background: #199ED8;
+	    	text-align: center;
+	    	line-height: 40px;
+	    }
+	    .spfl a{
+	        color: #FFFFFF;
+	        font-size: 16px;
+		    float: left;
+		    padding-left: 20px;
+	    }
+	    .text{
+	    	width: 170px;
+	    	height: 32px;
+	    }
+	    .text dt{
+	    	line-height: 32px;
+	    	padding-left: 20px;
+	    }
+	    .text dt a{
+	    	padding-left: 6px;
+	    	color: #FFFFFF;
+	    	font-size: 13px;
+	    	color: #333333;
+	    }
+	    .jiantou{
+	    	float: right;
+		    padding-top: 11px;
+		    padding-right: 20px;
+	    }
+	    .text dt:hover{
+	    	background: #f2f2f2;
+	    }
+	   .text dd{
+	   	    display: none;
+	     	position: absolute;
+		    width: 1015px;
+		    top: 0px;
+		    left: 169px;
+		    z-index: 15;
+		    background: #FFFFFF;
+		    box-shadow: 1px 2px 3px rgba(0,0,0,0.06);
+		    border-right: #199ED8 solid 5px;
+		    border-left: #e2e2e2 solid 1px;
+	   }
+	   .text dd ul{
+		   	width: 440px;
+		    padding: 10px 0 20px;
+		    display: block;
+		    min-height: 320px;
+		    margin-left: 30px;
+		    float: left;
+	   }
+	   .text dd ul li{
+	     	list-style: none;
+	     	border-bottom: #eaeaea solid 1px;
+            padding-bottom: 10px;
+            padding-top: 15px; 
+	   }
+	   .text dd ul li:last-child{
+	   	    border-bottom: none;
+	   }
+	   .text dd ul li strong a{
+	   	     color: #333333;
+	   }
+	   .text dd ul li p span,.text dd ul li p a{
+		   	color: #666666;
+		   	font-size: 13px;
+	   }
+	   .text dd ul li p>span{
+	     	padding:0px 5px 0px 5px;
+	     	color: #a2a2a2;
+	   }
+	   .text dd ul li p{
+	     	padding-top: 8px;   	
+	   }
+	   .menu-box dl{
+	   	    margin-bottom: 15px;
+	   	    padding-top: 5px;
+	   }
+	   .menuleft{
+	   	float: left;
+	   }
+	  .yhj{
+	  	background: url(../img/rmsp.png) no-repeat;
+	  	width: 230px;
+	  	height: 60px;
+	  	float: right;
+	  	position: relative;
+	  	top: -24px; 
+	  }
+	  
+	  
+	  
+	  
+	 

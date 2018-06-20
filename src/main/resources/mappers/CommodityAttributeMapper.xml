@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.CommodityAttributeMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.CommodityAttribute">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="commodity_id" jdbcType="VARCHAR" property="commodityId" />
+    <result column="attribute_def_id" jdbcType="VARCHAR" property="attributeDefId" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+     
+      <association property="attri"  column="attribute_def_id" 
+			select="com.ztgm.mall.dao.AttributeDefMapper.selectByPrimaryKey"
+			javaType="com.ztgm.mall.pojo.AttributeDef"/>
+    
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, commodity_id, attribute_def_id, value
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mall_commodity_attribute
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+    
+   <delete id="deleteByGoodsId" parameterType="java.lang.String">
+     delete from mall_commodity_attribute
+    where commodity_id = #{id,jdbcType=VARCHAR}
+   </delete>
+  
+       <select id="selectCommodityAttributeListByCommodityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select 
+    instance.*
+    from mall_commodity_attribute instance 
+    where commodity_id=#{id} order by create_time
+  </select>
+  
+  
+       <select id="selectCommodityAttributeList" parameterType="com.ztgm.mall.pojo.CommodityAttribute" resultMap="BaseResultMap">
+  select 
+    instance.*
+    from mall_commodity_attribute instance 
+    where 1=1
+    
+		<if test=" commodityId !=null and commodityId !='' ">
+			AND instance.commodity_id=commodityId
+		</if>
+    
+  </select>
+  
+   
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_commodity_attribute
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.CommodityAttribute">
+    insert into mall_commodity_attribute (id, commodity_id, attribute_def_id, 
+      value)
+    values (#{id,jdbcType=VARCHAR}, #{commodityId,jdbcType=VARCHAR}, #{attributeDefId,jdbcType=VARCHAR}, 
+      #{value,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.CommodityAttribute">
+    insert into mall_commodity_attribute
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="commodityId != null">
+        commodity_id,
+      </if>
+      <if test="attributeDefId != null">
+        attribute_def_id,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityId != null">
+        #{commodityId,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeDefId != null">
+        #{attributeDefId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.CommodityAttribute">
+    update mall_commodity_attribute
+    <set>
+      <if test="commodityId != null">
+        commodity_id = #{commodityId,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeDefId != null">
+        attribute_def_id = #{attributeDefId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.CommodityAttribute">
+    update mall_commodity_attribute
+    set commodity_id = #{commodityId,jdbcType=VARCHAR},
+      attribute_def_id = #{attributeDefId,jdbcType=VARCHAR},
+      value = #{value,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

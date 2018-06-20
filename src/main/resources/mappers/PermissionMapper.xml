@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ztgm.iot.dao.PermissionMapper">
-  <resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.Permission">
+<mapper namespace="com.ztgm.mall.dao.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.Permission">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="type" jdbcType="VARCHAR" property="type" />
@@ -10,7 +10,12 @@
     <result column="parentid" jdbcType="VARCHAR" property="parentid" />
     <result column="parentids" jdbcType="VARCHAR" property="parentids" />
     <result column="sortstring" jdbcType="VARCHAR" property="sortstring" />
-    <result column="available" jdbcType="CHAR" property="available" />
+    
+       <result column="parentname" jdbcType="VARCHAR" property="parentname" /> 
+    
+    <result column="available" jdbcType="VARCHAR" property="available" />
+  
+    
   </resultMap>
   <sql id="Base_Column_List">
     id, name, type, url, percode, parentid, parentids, sortstring, available
@@ -19,34 +24,36 @@
   
 
 
-     <select id="selectPermissionList" parameterType="com.ztgm.iot.pojo.Permission" resultMap="BaseResultMap">
+     <select id="selectPermissionList" parameterType="com.ztgm.mall.pojo.Permission" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List" />
-    from iot_sys_permission
+   p.*,p1.name parentname
+    from mall_sys_permission p left join mall_sys_permission p1 on p.parentid=p1.id
     where 1=1
       <if test="name != null and name !='' ">
-       and  name like concat('%',#{name},'%')
+       and  p.name like concat('%',#{name},'%')
       </if>
        <if test="parentid != null and parentid !='' ">
-       and  parentid =#{parentid}
+       and  p.parentid =#{parentid}
       </if>
        <if test="type != null and type !='' ">
-       and  type =#{type}
+       and  p.type =#{type}
       </if>
        <if test="available != null and available !='' ">
-       and  available =#{available}
+       and  p.available =#{available}
       </if>
+      
+      order by p.sortstring 
     
   </select>
   
 
-<select id="getRolePermissionList" parameterType="com.ztgm.iot.pojo.Role"
+<select id="getRolePermissionList" parameterType="com.ztgm.mall.pojo.Role"
 		resultMap="BaseResultMap">
 
 			select distinct menu.* from 
-iot_sys_role_permission rm 
- left join iot_sys_permission menu on menu.id=rm.sys_permission_id
- left join iot_sys_role r on rm.sys_role_id=r.id
+mall_sys_role_permission rm 
+ left join mall_sys_permission menu on menu.id=rm.sys_permission_id
+ left join mall_sys_role r on rm.sys_role_id=r.id
 where 1=1
  
  and r.id=#{id}
@@ -59,25 +66,25 @@ and menu.available=1
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from iot_sys_permission
+    from mall_sys_permission
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from iot_sys_permission
+    delete from mall_sys_permission
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.ztgm.iot.pojo.Permission">
-    insert into iot_sys_permission (id, name, type, 
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.Permission">
+    insert into mall_sys_permission (id, name, type, 
       url, percode, parentid, 
       parentids, sortstring, available
       )
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{url,jdbcType=VARCHAR}, #{percode,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, 
-      #{parentids,jdbcType=VARCHAR}, #{sortstring,jdbcType=VARCHAR}, #{available,jdbcType=CHAR}
+      #{parentids,jdbcType=VARCHAR}, #{sortstring,jdbcType=VARCHAR}, #{available,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.ztgm.iot.pojo.Permission">
-    insert into iot_sys_permission
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.Permission">
+    insert into mall_sys_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -133,12 +140,12 @@ and menu.available=1
         #{sortstring,jdbcType=VARCHAR},
       </if>
       <if test="available != null">
-        #{available,jdbcType=CHAR},
+        #{available,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.iot.pojo.Permission">
-    update iot_sys_permission
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.Permission">
+    update mall_sys_permission
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -162,13 +169,13 @@ and menu.available=1
         sortstring = #{sortstring,jdbcType=VARCHAR},
       </if>
       <if test="available != null">
-        available = #{available,jdbcType=CHAR},
+        available = #{available,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ztgm.iot.pojo.Permission">
-    update iot_sys_permission
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.Permission">
+    update mall_sys_permission
     set name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
@@ -176,16 +183,32 @@ and menu.available=1
       parentid = #{parentid,jdbcType=VARCHAR},
       parentids = #{parentids,jdbcType=VARCHAR},
       sortstring = #{sortstring,jdbcType=VARCHAR},
-      available = #{available,jdbcType=CHAR}
+      available = #{available,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectPermissionsByRoleId" resultType="java.util.HashMap">
-    SELECT t2.* FROM iot_sys_role_permission t1,iot_sys_permission t2 WHERE t1.sys_permission_id=t2.id AND t2.available=1 AND sys_role_id=#{roleId} ORDER BY t2.type asc,t2.sortstring
+  <select id="selectPermissionsByRoleId" resultMap="BaseResultMap">
+    SELECT t2.* FROM mall_sys_role_permission t1,mall_sys_permission t2 WHERE t1.sys_permission_id=t2.id AND t2.available=1 AND sys_role_id=#{roleId} ORDER BY t2.type asc,t2.sortstring
+  </select>
+
+
+  <select id="selectPermissionsByManagerId" resultMap="BaseResultMap">
+   select * from (
+   SELECT  distinct t2.* FROM 
+mall_manager m, mall_sys_user_role ur,
+mall_sys_role_permission t1,mall_sys_permission t2 
+WHERE 
+m.ID=ur.sys_user_id
+and ur.sys_role_id=t1.sys_role_id and 
+t1.sys_permission_id=t2.id AND t2.available=1 
+AND m.ID=#{mangerId}
+) temp
+order BY temp.type asc,temp.sortstring
   </select>
 
 
 
+
   <select id="selectPermissions" resultType="java.util.HashMap">
-    SELECT url,percode FROM iot_sys_permission  WHERE  available=1 AND type=2
+    SELECT url,percode FROM mall_sys_permission  WHERE  available=1 AND type=2
   </select>
 </mapper>

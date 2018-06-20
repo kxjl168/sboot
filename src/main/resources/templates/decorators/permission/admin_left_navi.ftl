@@ -6,7 +6,7 @@
         <#list principal.userMenus as menu>
             <li>
                 <a href="#"><i class="fa fa-user fa-fw"></i> ${menu.name}<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse in">
+                <ul class="nav nav-second-level ">
                     <#assign persissions = menu.permissions>
                     <#list persissions as permission>
                         <li>

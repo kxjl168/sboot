@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.CommodityMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.Commodity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="fst_classify" jdbcType="VARCHAR" property="fstClassify" />
+    <result column="scd_classify" jdbcType="VARCHAR" property="scdClassify" />
+    <result column="thd_classify" jdbcType="VARCHAR" property="thdClassify" />
+    <result column="trademark_id" jdbcType="VARCHAR" property="trademarkId" />
+        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="merchant_id" jdbcType="VARCHAR" property="merchantId" />
+    <result column="customer_care" jdbcType="VARCHAR" property="customerCare" />
+      <result column="status" jdbcType="INTEGER" property="status" />
+      
+      <association property="brand"  column="trademark_id"
+			select="com.ztgm.mall.dao.BrandMapper.selectByPrimaryKey"
+			javaType="com.ztgm.mall.pojo.Brand"/>
+	<association property="firstClass"  column="fst_classify"
+			select="com.ztgm.mall.dao.CommodityFirstClassifyMapper.selectByPrimaryKey"
+			javaType="com.ztgm.mall.pojo.CommodityFirstClassify"/>
+	<association property="secondClass"  column="scd_classify" 
+			select="com.ztgm.mall.dao.CommoditySecondClassifyMapper.selectByPrimaryKey"
+			javaType="com.ztgm.mall.pojo.CommoditySecondClassify"/>
+	<association property="thirdClass"  column="thd_classify" 
+			select="com.ztgm.mall.dao.CommodityThirdClassifyMapper.selectByPrimaryKey"
+			javaType="com.ztgm.mall.pojo.CommodityThirdClassify"/>		
+	
+			
+    
+     <collection property="commodityAttributes" ofType="com.ztgm.mall.pojo.CommodityAttribute"
+                select="com.ztgm.mall.dao.CommodityAttributeMapper.selectCommodityAttributeListByCommodityId" column="id"/>
+      <collection property="commodityOptions" ofType="com.ztgm.mall.pojo.CommodityOption"
+                select="com.ztgm.mall.dao.CommodityOptionMapper.selectCommodityOptionListByCommodityId" column="id"/>
+       <collection property="commondityImages" ofType="com.ztgm.mall.pojo.CommondityImage"
+                select="com.ztgm.mall.dao.CommondityImageMapper.selectCommondityImageListByCommodityId" column="id"/>
+ <collection property="commondityAttachs" ofType="com.ztgm.mall.pojo.CommondityAttach"
+                select="com.ztgm.mall.dao.CommondityAttachMapper.selectCommondityAttachListByCommodityId" column="id"/>
+	
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ztgm.mall.pojo.Commodity">
+    <result column="introduction" jdbcType="LONGVARCHAR" property="introduction" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, fst_classify, scd_classify, thd_classify, trademark_id, unit, code, merchant_id
+  </sql>
+  <sql id="Blob_Column_List">
+    introduction
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mall_commodity
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+       <select id="selectCommodityList" parameterType="com.ztgm.mall.pojo.Commodity" resultMap="BaseResultMap">
+  select 
+    gd.*
+    from mall_commodity gd
+    left join mall_brand brand on gd.trademark_id=brand.id
+    left join mall_first_classify firstClass on gd.fst_classify=firstClass.id
+    left join mall_second_classify secondClass on gd.scd_classify=secondClass.id
+    left join mall_third_classify thirdClass on gd.thd_classify=thirdClass.id 
+    where 1=1  and gd.status=1
+    
+
+		<if test=" name !=null and name !='' ">
+			AND gd.name like CONCAT ('%',#{name },'%') 
+		</if>
+		
+		<if test=" sortName !=null and sortName !='' ">
+			order by  ${sortName} ${sortOrder}
+		</if>
+		
+	
+    
+  </select>
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_commodity
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.Commodity">
+    insert into mall_commodity (id, name, fst_classify, 
+      scd_classify, thd_classify, trademark_id, 
+      unit, code, merchant_id, 
+      introduction)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{fstClassify,jdbcType=VARCHAR}, 
+      #{scdClassify,jdbcType=VARCHAR}, #{thdClassify,jdbcType=VARCHAR}, #{trademarkId,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{merchantId,jdbcType=VARCHAR}, 
+      #{introduction,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.Commodity">
+    insert into mall_commodity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="fstClassify != null">
+        fst_classify,
+      </if>
+      <if test="scdClassify != null">
+        scd_classify,
+      </if>
+      <if test="thdClassify != null">
+        thd_classify,
+      </if>
+      <if test="trademarkId != null">
+        trademark_id,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="merchantId != null">
+        merchant_id,
+      </if>
+      <if test="introduction != null">
+        introduction,
+      </if>
+      <if test="customerCare != null">
+        customer_care,
+      </if>
+    <if test="status != null">
+        status,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="fstClassify != null">
+        #{fstClassify,jdbcType=VARCHAR},
+      </if>
+      <if test="scdClassify != null">
+        #{scdClassify,jdbcType=VARCHAR},
+      </if>
+      <if test="thdClassify != null">
+        #{thdClassify,jdbcType=VARCHAR},
+      </if>
+      <if test="trademarkId != null">
+        #{trademarkId,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantId != null">
+        #{merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="customerCare != null">
+        #{customerCare,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="status != null">
+        #{status},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.Commodity">
+    update mall_commodity
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="fstClassify != null">
+        fst_classify = #{fstClassify,jdbcType=VARCHAR},
+      </if>
+      <if test="scdClassify != null">
+        scd_classify = #{scdClassify,jdbcType=VARCHAR},
+      </if>
+      <if test="thdClassify != null">
+        thd_classify = #{thdClassify,jdbcType=VARCHAR},
+      </if>
+      <if test="trademarkId != null">
+        trademark_id = #{trademarkId,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantId != null">
+        merchant_id = #{merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null">
+        introduction = #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="customerCare != null">
+        customer_care = #{customerCare,jdbcType=LONGVARCHAR},
+      </if>
+       <if test="status != null">
+        status=#{status},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ztgm.mall.pojo.Commodity">
+    update mall_commodity
+    set name = #{name,jdbcType=VARCHAR},
+      fst_classify = #{fstClassify,jdbcType=VARCHAR},
+      scd_classify = #{scdClassify,jdbcType=VARCHAR},
+      thd_classify = #{thdClassify,jdbcType=VARCHAR},
+      trademark_id = #{trademarkId,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      merchant_id = #{merchantId,jdbcType=VARCHAR},
+      introduction = #{introduction,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.Commodity">
+    update mall_commodity
+    set name = #{name,jdbcType=VARCHAR},
+      fst_classify = #{fstClassify,jdbcType=VARCHAR},
+      scd_classify = #{scdClassify,jdbcType=VARCHAR},
+      thd_classify = #{thdClassify,jdbcType=VARCHAR},
+      trademark_id = #{trademarkId,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      merchant_id = #{merchantId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

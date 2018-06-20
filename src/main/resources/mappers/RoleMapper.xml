@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ztgm.iot.dao.RoleMapper">
-	<resultMap id="BaseResultMap" type="com.ztgm.iot.pojo.Role">
+<mapper namespace="com.ztgm.mall.dao.RoleMapper">
+	<resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.Role">
 		<id column="id" jdbcType="VARCHAR" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="available" jdbcType="CHAR" property="available" />
@@ -12,11 +12,11 @@
 
 
 
-	<select id="selectRoleByUser"
-		parameterType="com.ztgm.iot.pojo.User" resultMap="BaseResultMap">
+	<select id="selectRoleByManager"
+            parameterType="com.ztgm.mall.pojo.Manager" resultMap="BaseResultMap">
 		
-		SELECT t1. sys_role_id id,t1.sys_user_id,t2.name FROM iot_sys_user_role
-		t1,iot_sys_role t2 WHERE t1.sys_role_id=t2.id AND t2.available=1
+		SELECT t1. sys_role_id id,t1.sys_user_id,t2.name FROM mall_sys_user_role
+		t1,mall_sys_role t2 WHERE t1.sys_role_id=t2.id AND t2.available=1
 		AND t1.sys_user_id=#{id}
 
 
@@ -24,10 +24,10 @@
 
 
 	<select id="selectRoleList"
-		parameterType="com.ztgm.iot.pojo.Role" resultMap="BaseResultMap">
+            parameterType="com.ztgm.mall.pojo.Role" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from iot_sys_role
+		from mall_sys_role
 		where 1=1
 		<if test="name != null and name !='' ">
 			and name like concat('%',#{name},'%')
@@ -44,23 +44,23 @@
 		resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from iot_sys_role
+		from mall_sys_role
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-		delete from iot_sys_role
+		delete from mall_sys_role
 		where id = #{id,jdbcType=VARCHAR}
 	</delete>
-	<insert id="insert" parameterType="com.ztgm.iot.pojo.Role">
-		insert into iot_sys_role (id, name, available
+	<insert id="insert" parameterType="com.ztgm.mall.pojo.Role">
+		insert into mall_sys_role (id, name, available
 		)
 		values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
 		#{available,jdbcType=CHAR}
 		)
 	</insert>
 	<insert id="insertSelective"
-		parameterType="com.ztgm.iot.pojo.Role">
-		insert into iot_sys_role
+		parameterType="com.ztgm.mall.pojo.Role">
+		insert into mall_sys_role
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">
 				id,
@@ -85,8 +85,8 @@
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective"
-		parameterType="com.ztgm.iot.pojo.Role">
-		update iot_sys_role
+		parameterType="com.ztgm.mall.pojo.Role">
+		update mall_sys_role
 		<set>
 			<if test="name != null">
 				name = #{name,jdbcType=VARCHAR},
@@ -98,22 +98,23 @@
 		where id = #{id,jdbcType=VARCHAR}
 	</update>
 	<update id="updateByPrimaryKey"
-		parameterType="com.ztgm.iot.pojo.Role">
-		update iot_sys_role
+		parameterType="com.ztgm.mall.pojo.Role">
+		update mall_sys_role
 		set name = #{name,jdbcType=VARCHAR},
 		available = #{available,jdbcType=CHAR}
 		where id = #{id,jdbcType=VARCHAR}
 	</update>
-	<select id="selectRoleByUserId" resultType="java.util.HashMap">
-		SELECT t1.id,sys_user_id,sys_role_id,t2.name FROM iot_sys_user_role
-		t1,iot_sys_role t2 WHERE t1.sys_role_id=t2.id AND t2.available=1 AND
+	<select id="selectRoleByManagerId" resultType="java.util.HashMap">
+		SELECT t1.id,sys_user_id,sys_role_id,t2.name
+		FROM mall_sys_user_role t1, mall_sys_role t2
+		WHERE t1.sys_role_id=t2.id AND t2.available=1 AND
 		sys_user_id=#{userId}
 	</select>
 
 	<select id="selectRoleByConditions"
 		parameterType="java.util.Map" resultType="java.util.HashMap">
 		SELECT *
-		FROM iot_sys_role
+		FROM mall_sys_role
 		WHERE 1=1
 		<if test="id!=null">
 			AND id = #{id}

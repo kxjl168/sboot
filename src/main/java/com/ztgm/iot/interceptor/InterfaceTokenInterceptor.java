@@ -83,7 +83,7 @@ public class InterfaceTokenInterceptor implements HandlerInterceptor {
             return false;
         }
         TokenUtil.setCurrentUser(user);
-        TokenUtil.setCurGroupUser(groupUserService.findGroupByUser(user.getId()));
+       // TokenUtil.setCurGroupUser(groupUserService.findGroupByUser(user.getId()));
         return true;
     }
 

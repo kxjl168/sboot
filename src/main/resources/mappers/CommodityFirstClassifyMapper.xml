@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.CommodityFirstClassifyMapper">
+  <resultMap id="FirstClassifyResultMap" type="com.ztgm.mall.pojo.CommodityFirstClassify">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="icon_id" jdbcType="VARCHAR" property="iconId" />
+    <result column="picture_id" jdbcType="VARCHAR" property="pictureId" />
+    <result column="big_picture_id" jdbcType="VARCHAR" property="bigPictureId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="enabled" jdbcType="INTEGER" property="enabled" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <association property="iconFile" javaType="com.ztgm.mall.pojo.SvrFileInfo" select="com.ztgm.mall.dao.SvrFileInfoMapper.getFileInfo" column="icon_id" >
+    </association>
+    <association property="pictureFile" javaType="com.ztgm.mall.pojo.SvrFileInfo" select="com.ztgm.mall.dao.SvrFileInfoMapper.getFileInfo" column="picture_id" >
+    </association>
+    <association property="bigPictureFile" javaType="com.ztgm.mall.pojo.SvrFileInfo" select="com.ztgm.mall.dao.SvrFileInfoMapper.getFileInfo" column="big_picture_id" >
+    </association>
+    <collection property="commoditySecondClassifyList" ofType="com.ztgm.mall.pojo.CommoditySecondClassify"
+                select="getCommoditySecondClassify" column="id"/>
+
+  </resultMap>
+
+
+  <resultMap id="IndexFirstClassifyResultMap" type="com.ztgm.mall.pojo.CommodityFirstClassify">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="icon_id" jdbcType="VARCHAR" property="iconId" />
+    <result column="picture_id" jdbcType="VARCHAR" property="pictureId" />
+    <result column="big_picture_id" jdbcType="VARCHAR" property="bigPictureId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="enabled" jdbcType="INTEGER" property="enabled" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <association property="iconFile" javaType="com.ztgm.mall.pojo.SvrFileInfo" select="com.ztgm.mall.dao.SvrFileInfoMapper.getFileInfo" column="icon_id" >
+    </association>
+    <association property="pictureFile" javaType="com.ztgm.mall.pojo.SvrFileInfo" select="com.ztgm.mall.dao.SvrFileInfoMapper.getFileInfo" column="picture_id" >
+    </association>
+    <association property="bigPictureFile" javaType="com.ztgm.mall.pojo.SvrFileInfo" select="com.ztgm.mall.dao.SvrFileInfoMapper.getFileInfo" column="big_picture_id" >
+    </association>
+    <collection property="commoditySecondClassifyList" ofType="com.ztgm.mall.pojo.CommoditySecondClassify"
+                select="getCommoditySecondClassify" column="id"/>
+    <collection property="commodityInstanceList" ofType="com.ztgm.mall.pojo.CommodityInstance"
+                select="com.ztgm.mall.dao.CommodityInstanceMapper.getTopCommodityInstanceListByFirstClassify" column="id"/>
+
+  </resultMap>
+
+
+
+  <resultMap id="SecondClassifyResultMap" type="com.ztgm.mall.pojo.CommoditySecondClassify">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="first_classify_id" jdbcType="VARCHAR" property="firstClassifyId" />
+    <result column="enabled" jdbcType="INTEGER" property="enabled" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <collection property="commodityThirdClassifyList" ofType="com.ztgm.mall.pojo.CommodityThirdClassify"
+                select="getCommodityThirdClassify" column="id"/>
+  </resultMap>
+
+  <resultMap id="ThirdClassifyResultMap" type="com.ztgm.mall.pojo.CommodityThirdClassify">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="second_classify_id" jdbcType="VARCHAR" property="secondClassifyId" />
+    <result column="enabled" jdbcType="INTEGER" property="enabled" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, name, description, icon_id, picture_id, big_picture_id, status, enabled, sort, creator, create_time,
+    updater, update_time
+  </sql>
+
+  <select id="getCommoditySecondClassify" resultMap="SecondClassifyResultMap" parameterType="java.lang.String">
+    SELECT * FROM mall_second_classify
+    WHERE first_classify_id = #{id} AND enabled != 2
+  </select>
+
+  <select id="getCommodityThirdClassify" resultMap="ThirdClassifyResultMap" parameterType="java.lang.String">
+    SELECT * FROM mall_third_classify
+    WHERE second_classify_id = #{id} AND enabled != 2
+  </select>
+
+
+  <select id="showTopUserfullClassify" resultMap="FirstClassifyResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM mall_first_classify WHERE enabled =1
+  </select>
+
+
+
+  <select id="showAllClassify" resultMap="FirstClassifyResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM mall_first_classify WHERE enabled != 2
+  </select>
+  
+  
+    <select id="getClassifyByPidAndLevel" resultMap="FirstClassifyResultMap" parameterType="java.util.Map">
+    <if test="level == '2'.toString()">
+      SELECT
+      *
+      FROM mall_second_classify   WHERE enabled = 1 
+     	<if test="pid !=null and pid !='' ">
+     	and first_classify_id=#{pid}
+ 
+ 	   </if>
+    </if>
+    <if test="level == '3'.toString()">
+      SELECT *
+      FROM mall_third_classify  WHERE enabled = 1 
+ 	<if test="pid !=null and pid !='' ">
+     	and second_classify_id=#{pid}
+ 
+ 	   </if>
+    </if>
+    
+      
+  </select>
+  
+
+  <select id="getAllTopClassify" resultMap="FirstClassifyResultMap" parameterType="java.lang.String">
+    <if test="level == '2'.toString()">
+      SELECT
+      <include refid="Base_Column_List" />
+      FROM mall_first_classify
+      WHERE enabled != 2
+    </if>
+    <if test="level == '3'.toString()">
+      SELECT *
+      FROM mall_second_classify
+      WHERE enabled != 2
+    </if>
+  </select>
+  
+  <select id="getRelationCount" resultType="java.lang.Integer">
+    <if test="level == '1'.toString()">
+      SELECT count(*)
+      FROM mall_second_classify
+      WHERE enabled != 2 AND first_classify_id = #{id}
+    </if>
+    <if test="level == '2'.toString()">
+      SELECT count(*)
+      FROM mall_third_classify
+      WHERE enabled != 2 AND second_classify_id = #{id}
+    </if>
+    <if test="level == '3'.toString()">
+      SELECT count(*)
+      FROM mall_commodity
+      WHERE status != 2 AND thd_classify = #{id}
+    </if>
+  </select>
+
+  <update id="updateByCondition">
+    <if test="level == '1'.toString()">
+      update mall_first_classify
+      <set>
+        <if test="firstClassify.name != null">
+          name = #{firstClassify.name,jdbcType=VARCHAR},
+        </if>
+        <if test="firstClassify.description != null">
+          description = #{firstClassify.description,jdbcType=VARCHAR},
+        </if>
+        <if test="firstClassify.status != null">
+          status = #{firstClassify.status,jdbcType=INTEGER},
+        </if>
+        <if test="firstClassify.enabled != null">
+          enabled = #{firstClassify.enabled,jdbcType=INTEGER},
+        </if>
+        <if test="firstClassify.sort != null">
+          sort = #{firstClassify.sort,jdbcType=INTEGER},
+        </if>
+        <if test="firstClassify.updater != null">
+          updater = #{firstClassify.updater,jdbcType=VARCHAR},
+        </if>
+        update_time = CURRENT_TIMESTAMP,
+      </set>
+      where id = #{firstClassify.id,jdbcType=VARCHAR}
+    </if>
+    <if test="level == '2'.toString()">
+      update mall_second_classify
+      <set>
+        <if test="firstClassify.name != null">
+          name = #{firstClassify.name,jdbcType=VARCHAR},
+        </if>
+        <if test="firstClassify.description != null">
+          description = #{firstClassify.description,jdbcType=VARCHAR},
+        </if>
+        <if test="topClassify != null">
+          first_classify_id = #{topClassify,jdbcType=VARCHAR},
+        </if>
+        <if test="firstClassify.enabled != null">
+          enabled = #{firstClassify.enabled,jdbcType=INTEGER},
+        </if>
+        <if test="firstClassify.sort != null">
+          sort = #{firstClassify.sort,jdbcType=INTEGER},
+        </if>
+        <if test="firstClassify.updater != null">
+          updater = #{firstClassify.updater,jdbcType=VARCHAR},
+        </if>
+        update_time = CURRENT_TIMESTAMP,
+      </set>
+      where id = #{firstClassify.id,jdbcType=VARCHAR}
+    </if>
+    <if test="level == '3'.toString()">
+      update mall_third_classify
+      <set>
+        <if test="firstClassify.name != null">
+          name = #{firstClassify.name,jdbcType=VARCHAR},
+        </if>
+        <if test="firstClassify.description != null">
+          description = #{firstClassify.description,jdbcType=VARCHAR},
+        </if>
+        <if test="topClassify != null">
+          second_classify_id = #{topClassify,jdbcType=VARCHAR},
+        </if>
+        <if test="firstClassify.enabled != null">
+          enabled = #{firstClassify.enabled,jdbcType=INTEGER},
+        </if>
+        <if test="firstClassify.sort != null">
+          sort = #{firstClassify.sort,jdbcType=INTEGER},
+        </if>
+        <if test="firstClassify.updater != null">
+          updater = #{firstClassify.updater,jdbcType=VARCHAR},
+        </if>
+        update_time = CURRENT_TIMESTAMP,
+      </set>
+      where id = #{firstClassify.id,jdbcType=VARCHAR}
+    </if>
+  </update>
+
+  <update id="updatePictureInfo">
+    UPDATE mall_first_classify
+    SET
+    <if test="type == 'icon'.toString()">
+      icon_id = #{pictureId}
+    </if>
+    <if test="type == 'picture'.toString()">
+      picture_id = #{pictureId}
+    </if>
+    <if test="type == 'bigPicture'.toString()">
+      big_picture_id = #{pictureId}
+    </if>
+    WHERE id = #{id}
+  </update>
+
+  <insert id="insertByCondition">
+    <if test="level == '1'.toString()">
+      insert into mall_first_classify (id, name, description,
+      status, enabled,
+      sort, creator, create_time,
+      updater, update_time)
+      values (#{firstClassify.id,jdbcType=VARCHAR},
+      #{firstClassify.name,jdbcType=VARCHAR},
+      #{firstClassify.description,jdbcType=VARCHAR},
+      #{firstClassify.status,jdbcType=INTEGER},
+      #{firstClassify.enabled,jdbcType=INTEGER},
+      #{firstClassify.sort,jdbcType=INTEGER},
+      #{firstClassify.creator,jdbcType=VARCHAR},
+      CURRENT_TIMESTAMP ,
+      #{firstClassify.updater,jdbcType=VARCHAR},
+      CURRENT_TIMESTAMP
+      )
+    </if>
+    <if test="level == '2'.toString()">
+      insert into mall_second_classify (id, name,
+      description, first_classify_id,
+      enabled, sort, creator, create_time,
+      updater, update_time)
+      values (#{firstClassify.id,jdbcType=VARCHAR},
+      #{firstClassify.name,jdbcType=VARCHAR},
+      #{firstClassify.description,jdbcType=VARCHAR},
+      #{topClassify, jdbcType=VARCHAR},
+      #{firstClassify.enabled,jdbcType=INTEGER},
+      #{firstClassify.sort,jdbcType=INTEGER},
+      #{firstClassify.creator,jdbcType=VARCHAR},
+      CURRENT_TIMESTAMP ,
+      #{firstClassify.updater,jdbcType=VARCHAR},
+      CURRENT_TIMESTAMP
+      )
+    </if>
+    <if test="level == '3'.toString()">
+      insert into mall_third_classify (id, name,
+      description, second_classify_id,
+      enabled, sort, creator, create_time,
+      updater, update_time)
+      values (#{firstClassify.id,jdbcType=VARCHAR},
+      #{firstClassify.name,jdbcType=VARCHAR},
+      #{firstClassify.description,jdbcType=VARCHAR},
+      #{topClassify, jdbcType=VARCHAR},
+      #{firstClassify.enabled,jdbcType=INTEGER},
+      #{firstClassify.sort,jdbcType=INTEGER},
+      #{firstClassify.creator,jdbcType=VARCHAR},
+      CURRENT_TIMESTAMP ,
+      #{firstClassify.updater,jdbcType=VARCHAR},
+      CURRENT_TIMESTAMP
+      )
+    </if>
+  </insert>
+  
+  <update id="deleteClassify">
+    <if test="level == '1'.toString()">
+      UPDATE mall_first_classify
+      SET enabled = 2
+      where id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="level == '2'.toString()">
+      UPDATE mall_second_classify
+      SET enabled = 2
+      where id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="level == '3'.toString()">
+      UPDATE mall_third_classify
+      SET enabled = 2
+      where id = #{id,jdbcType=VARCHAR}
+    </if>
+  </update>
+
+  <select id="getTopClassify" resultMap="IndexFirstClassifyResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM mall_first_classify where status=1 limit #{limit}
+  </select>
+
+  <select id="getClassifyById" resultType="java.util.HashMap" >
+    <if test="level == '1'.toString()">
+      SELECT
+      *
+      FROM mall_first_classify where id=#{id}
+    </if>
+    <if test="level == '2'.toString()">
+      SELECT
+      *
+      FROM mall_second_classify where id=#{id}
+    </if>
+    <if test="level == '3'.toString()">
+      SELECT *
+      FROM mall_third_classify where id=#{id}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="FirstClassifyResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mall_first_classify
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getSubClassifies" resultType="java.util.HashMap" >
+    <if test="level == '1'.toString()">
+      SELECT
+      *
+      FROM mall_second_classify where first_classify_id=#{id} and enabled=1
+    </if>
+    <if test="level == '2'.toString()">
+      SELECT *
+      FROM mall_third_classify where second_classify_id=#{id} and enabled=1
+    </if>
+    <if test="level == '3'.toString()">
+
+    </if>
+  </select>
+</mapper>

@@ -8,7 +8,7 @@
 <meta name="author" content="">
 
 <title>权限菜单管理</title>
-
+<link rel="stylesheet" href="/js/ztree/zTreeStyle.css">
 </head>
 
 <body>
@@ -56,6 +56,29 @@
 												aria-controls="dataTables-example">
 										</div>
 									</div>
+									
+									<div class="form-group">
+										<label for="name" class="lb_text col-lg-5 control-label">父菜单:</label>
+
+										<div class="col-lg-7">
+										<input id="q_pid" type="text" name="q_pid" readonly="readonly"
+												class="form-control " placeholder=""
+												aria-controls="dataTables-example">
+																							
+												
+										<div id="menuContent" class="help-block menuContent" style="display:none; position: absolute;">
+										<span id="cleanselect" class="cleanbtn">清除选择</span>
+	<ul id="treeDemo" class="ztree" style="margin-top:0; width:160px;"></ul>
+</div>
+										
+									
+													
+										<!-- 	<input id="q_pid" type="text" name="q_pid"
+												class="form-control " placeholder=""
+												aria-controls="dataTables-example"> -->
+										</div>
+									</div>
+									 
 								</div>
 								
 								<div class="col-sm-3 ">
@@ -136,6 +159,7 @@
 
 												<option value="1">一级菜单</option>
 												<option value="2"  selected="selected">二级菜单</option>
+												<option value="3"  >按钮</option>
 											</select>
 											<p class="help-block"></p>
 										</div>
@@ -166,8 +190,10 @@
 										<label for="name" class="col-lg-3 control-label">父菜单ID</label>
 
 										<div class="col-lg-9">
-											<input type="text" name="parentid" class="form-control"
-												id="parentid" placeholder="父菜单ID">
+										<!-- 	<input type="text" name="parentid" class="form-control"
+												id="parentid" placeholder="父菜单ID"> -->
+												<select name="parentid" class="form-control" id="parentid">
+												</select>
 											<p class="help-block"></p>
 										
 										</div>
@@ -220,8 +246,8 @@
 		</div>
 
 
-		<script src="/vendor/jquery/jquery.min.js"></script>
 		
+			<script src="/js/ztree/jquery.ztree.all.min.js"></script>
 		<script src="/vendor/privilege/js/permission.js"></script>
 </body>
 </html>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.AttributeDefMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.AttributeDef">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="is_specification" jdbcType="INTEGER" property="isSpecification" />
+    <result column="mandatory" jdbcType="INTEGER" property="mandatory" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, is_specification, mandatory, sort
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mall_attribute_def
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+     <select id="selectAttributeDefList" parameterType="com.ztgm.mall.pojo.AttributeDef" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mall_attribute_def
+    where 1=1
+
+<if test="id !=null and id !='' ">
+			AND id=#{id } 
+		</if>
+		<if test="name!=null and name !='' ">
+			AND name  like concat ('%',#{name },'%') 
+		</if>
+		<if test="isSpecification!=null">
+			AND is_specification = #{isSpecification }
+		</if>
+		<if test="mandatory!=null">
+			AND mandatory = #{mandatory }
+		</if>
+	
+  </select>
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_attribute_def
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.AttributeDef">
+    insert into mall_attribute_def (id, name, is_specification, 
+      mandatory, sort)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{isSpecification,jdbcType=INTEGER}, 
+      #{mandatory,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.AttributeDef">
+    insert into mall_attribute_def
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="isSpecification != null">
+        is_specification,
+      </if>
+      <if test="mandatory != null">
+        mandatory,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isSpecification != null">
+        #{isSpecification,jdbcType=INTEGER},
+      </if>
+      <if test="mandatory != null">
+        #{mandatory,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.AttributeDef">
+    update mall_attribute_def
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isSpecification != null">
+        is_specification = #{isSpecification,jdbcType=INTEGER},
+      </if>
+      <if test="mandatory != null">
+        mandatory = #{mandatory,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.AttributeDef">
+    update mall_attribute_def
+    set name = #{name,jdbcType=VARCHAR},
+      is_specification = #{isSpecification,jdbcType=INTEGER},
+      mandatory = #{mandatory,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

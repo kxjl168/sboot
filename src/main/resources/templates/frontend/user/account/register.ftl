@@ -30,23 +30,48 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form id="register_form" action="/user/register" class="form-horizontal"
+                        <form id="register_form" action="/front/regist.action" class="form-horizontal"
                               enctype="multipart/form-data"
                               role="form" method="POST">
+                            <div class="form-group" id="msgBox">
+                                ${msg!}
+                                <script >
+                                    //msgBox
+                                </script>
+                            </div>
+
                             <div class="form-group">
+                                <label for="cellphone" class="col-lg-3 control-label">手机号码</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="phone" class="form-control" id="cellphone"
+                                           placeholder="手机号码">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cellphone" class="col-lg-3 control-label">用户姓名</label>
+
+                                <div class="col-lg-4">
+                                    <input type="text" name="name" class="form-control" id="name"
+                                           placeholder="手机号码">
+                                </div>
+                            </div>
+
+                            <#--<div class="form-group">
                                 <label for="account" class="col-lg-3 control-label">用户名</label>
 
                                 <div class="col-lg-6">
-                                    <input type="text" name="account" class="form-control" id="account"
+                                    <input type="text" name="name" class="form-control" id="account"
                                            placeholder="您的账户名和登录名">
                                     <p class="help-block">请输入您的用户名，不超过16个汉字或32个字符</p>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="form-group">
                                 <label for="password" class="col-lg-3 control-label">设置密码</label>
 
                                 <div class="col-lg-4">
-                                    <input type="password" name="password" class="form-control" id="password"
+                                    <input type="password" name="pass" class="form-control" id="password"
                                            placeholder="您的登录密码">
                                     <p class="help-block">建议使用大、小字母加数字的组合</p>
                                     <div id="strong">
@@ -73,23 +98,16 @@
                                     <datalist id="input_list"></datalist>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="cellphone" class="col-lg-3 control-label">手机号码</label>
 
-                                <div class="col-lg-4">
-                                    <input type="text" name="cellphone" class="form-control" id="cellphone"
-                                           placeholder="手机号码">
-                                </div>
-                            </div>
-                            <div class="form-group">
+                            <#--<div class="form-group">
                                 <label for="nick_name" class="col-lg-3 control-label">昵称/机构全称</label>
 
                                 <div class="col-lg-6">
                                     <input type="text" name="nickName" class="form-control" id="nick_name"
                                            placeholder="昵称/机构全称">
                                 </div>
-                            </div>
-                            <div class="form-group" id="stamp_group">
+                            </div>-->
+                            <#--<div class="form-group" id="stamp_group">
                                 <label for="app_logo" class="col-lg-3 control-label">请上传附件图片</label>
 
                                 <div class="col-lg-6">
@@ -110,7 +128,7 @@
                                     </script>
                                     <p class="help-block">请上传机构三证合一统一代码证件资料图片,图片大小不能超过1M</p>
                                 </div>
-                            </div>
+                            </div>-->
 
                             <div class="form-group">
                                 <div class="col-lg-offset-3 col-lg-8">
@@ -145,9 +163,9 @@
             $(this).parent().parent().find('p').css('display', 'block');
         });
         //表单验证
-        $("#register_form").bootstrapValidator({
+        /*$("#register_form").bootstrapValidator({
             feedbackIcons: {
-                /*input状态样式通过，刷新，非法三种图片*/
+                /!*input状态样式通过，刷新，非法三种图片*!/
                 valid: 'glyphicon glyphicon-ok',
                 invalid: 'glyphicon glyphicon-remove',
                 validating: 'glyphicon glyphicon-refresh'
@@ -260,7 +278,7 @@
                     }
                 }
             }
-        });
+        });*/
         //显示密码
         $('#password').password().on('show.bs.password', function (e) {
         }).on('hide.bs.password', function (e) {

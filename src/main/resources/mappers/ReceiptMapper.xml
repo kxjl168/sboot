@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.ReceiptMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.Receipt">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="receipd_head" jdbcType="VARCHAR" property="receipdHead" />
+    <result column="receipt_content" jdbcType="VARCHAR" property="receiptContent" />
+    <result column="receipd_time" jdbcType="TIMESTAMP" property="receipdTime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_id, receipd_head, receipt_content, receipd_time, state, create_time, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mall_receipt
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+  
+       <select id="selectReceiptList" parameterType="com.ztgm.mall.pojo.Receipt" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mall_receipt
+    where 1=1
+
+		
+		<if test=" receipdHead !=null and receipdHead !='' ">
+			AND receipd_head like concat ('',#{receipdHead },'') 
+		</if>
+    
+  </select>
+
+  
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_receipt
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.Receipt">
+    insert into mall_receipt (id, order_id, receipd_head, 
+      receipt_content, receipd_time, state, 
+      create_time, remark)
+    values (#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{receipdHead,jdbcType=VARCHAR}, 
+      #{receiptContent,jdbcType=VARCHAR}, #{receipdTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.Receipt">
+    insert into mall_receipt
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="receipdHead != null">
+        receipd_head,
+      </if>
+      <if test="receiptContent != null">
+        receipt_content,
+      </if>
+      <if test="receipdTime != null">
+        receipd_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="receipdHead != null">
+        #{receipdHead,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptContent != null">
+        #{receiptContent,jdbcType=VARCHAR},
+      </if>
+      <if test="receipdTime != null">
+        #{receipdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.Receipt">
+    update mall_receipt
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="receipdHead != null">
+        receipd_head = #{receipdHead,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptContent != null">
+        receipt_content = #{receiptContent,jdbcType=VARCHAR},
+      </if>
+      <if test="receipdTime != null">
+        receipd_time = #{receipdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.Receipt">
+    update mall_receipt
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      receipd_head = #{receipdHead,jdbcType=VARCHAR},
+      receipt_content = #{receiptContent,jdbcType=VARCHAR},
+      receipd_time = #{receipdTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

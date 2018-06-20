@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>中通国脉IOT管理平台</title>
+    <title>中通国脉Mall管理平台</title>
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/vendor/login/css/login.css" rel="stylesheet">
 </head>
@@ -37,6 +37,7 @@
                 <div class="login-body content" style="margin-left: 45px;">
 
                     <form role="form" id="login_form" action="/login.action" method="POST">
+                        <input type="hidden" name="userType" value="backend">
                         <fieldset>
                             <div class="form-group gt">
                                 <img src="/img/user.png" style="margin-left: -200px;"/>

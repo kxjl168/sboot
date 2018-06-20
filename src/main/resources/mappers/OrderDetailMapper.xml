@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.OrderDetailMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.OrderDetail">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+     <result column="number" jdbcType="INTEGER" property="number" />
+      <result column="sort" jdbcType="INTEGER" property="sort" />
+      <result column="state" jdbcType="INTEGER" property="state" />
+      
+      
+    <result column="commondity_instance_id" jdbcType="VARCHAR" property="commondityInstanceId" />
+    <result column="expected_date" jdbcType="TIMESTAMP" property="expectedDate" />
+    
+          <association property="commodityInstance" column="commondity_instance_id" select="com.ztgm.mall.dao.CommodityInstanceMapper.selectByPrimaryKey"/>
+          
+              <association property="orderExchange" column="id" select="com.ztgm.mall.dao.OrderExchangeMapper.selectOrderExchangeByOrderId"/>
+        
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_id, commondity_instance_id, expected_date,sort,state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mall_order_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+     <select id="selectOrderDetailList" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select 
+    instance.*
+    from mall_order_detail instance
+	where order_id=#{id}
+	
+	 order by sort desc
+    
+  </select>
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_order_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.OrderDetail">
+    insert into mall_order_detail (id, order_id, commondity_instance_id, 
+      expected_date,number)
+    values (#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{commondityInstanceId,jdbcType=VARCHAR}, 
+      #{expectedDate,jdbcType=TIMESTAMP},#{number})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.OrderDetail">
+    insert into mall_order_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="commondityInstanceId != null">
+        commondity_instance_id,
+      </if>
+      <if test="expectedDate != null">
+        expected_date,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+       <if test="sort != null">
+        sort,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="commondityInstanceId != null">
+        #{commondityInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="expectedDate != null">
+        #{expectedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="number != null">
+        #{number},
+      </if>
+      <if test="sort != null">
+        #{sort},
+      </if>
+        <if test="state != null">
+        #{state},
+      </if>
+      
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.OrderDetail">
+    update mall_order_detail
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="commondityInstanceId != null">
+        commondity_instance_id = #{commondityInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="expectedDate != null">
+        expected_date = #{expectedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="number != null">
+        number=#{number},
+      </if>
+      <if test="sort != null">
+        sort=#{sort},
+      </if>
+        <if test="state != null">
+        state=#{state},
+      </if>
+      
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.OrderDetail">
+    update mall_order_detail
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      commondity_instance_id = #{commondityInstanceId,jdbcType=VARCHAR},
+      expected_date = #{expectedDate,jdbcType=TIMESTAMP},
+         number=#{number}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

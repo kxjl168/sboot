@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.OrderMapper">
+    <resultMap id="BaseResultOrder" type="com.ztgm.mall.pojo.Order">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="pay_money" jdbcType="DOUBLE" property="payMoney"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime"/>
+        <result column="pay_type" jdbcType="INTEGER" property="payType"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="delivery_address_id" jdbcType="VARCHAR" property="deliveryAddressId"/>
+        <association property="deliveryAddress" column="delivery_address_id" select="getDeliveryById"/>
+        <association property="mUser" column="user_id" select="getUserById"/>
+       <!--  <collection property="commodityList" column="id" ofType="com.ztgm.mall.pojo.CommodityInstance"
+                    select="getCommodityInstanceList"/> -->
+          <collection property="details" column="id" ofType="com.ztgm.mall.pojo.OrderDetail"
+                    select="com.ztgm.mall.dao.OrderDetailMapper.selectOrderDetailList"/>
+
+    </resultMap>
+
+    <resultMap id="BaseResultDelivery" type="com.ztgm.mall.pojo.DeliveryAddress">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="receiver" jdbcType="VARCHAR" property="receiver"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="is_default" jdbcType="INTEGER" property="isDefault"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMUser" type="com.ztgm.mall.pojo.MUser">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sexuality" jdbcType="INTEGER" property="sexuality"/>
+        <result column="head_img" jdbcType="VARCHAR" property="headImg"/>
+        <result column="scoring" jdbcType="INTEGER" property="scoring"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="pass" jdbcType="VARCHAR" property="pass"/>
+    </resultMap>
+
+    <resultMap id="BaseResultCommodityInstance" type="com.ztgm.mall.pojo.CommodityInstance">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="commodity_id" jdbcType="VARCHAR" property="commodityId"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <association property="commodity" column="commodity_id"
+                     select="com.ztgm.mall.dao.CommodityMapper.selectByPrimaryKey"
+                     javaType="com.ztgm.mall.pojo.Commodity"/>
+        <collection property="commondityInstanceOptions" ofType="com.ztgm.mall.pojo.CommondityInstanceOptions"
+                    select="com.ztgm.mall.dao.CommondityInstanceOptionsMapper.selectCommodityOptionListByInstanceId"
+                    column="id"/>
+    </resultMap>
+
+    <sql id="Base_Column_Order">
+    id, pay_money, state, remarks, create_time, pay_time, pay_type, user_id, delivery_address_id
+  </sql>
+
+ <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultOrder">
+    select 
+    <include refid="Base_Column_Order" />
+    from mall_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+
+
+    <select id="getDeliveryById" parameterType="java.lang.String" resultMap="BaseResultDelivery">
+    SELECT * FROM mall_delivery_address WHERE id = #{id}
+  </select>
+
+    <select id="getUserById" parameterType="java.lang.String" resultMap="BaseResultMUser">
+    SELECT * FROM mall_user WHERE id = #{id}
+  </select>
+
+    <select id="getCommodityInstanceList" resultMap="BaseResultCommodityInstance">
+        SELECT ci.* FROM mall_order_detail od
+        JOIN mall_commodity_instance ci ON od.commondity_instance_id = ci.id
+        WHERE order_id = #{id}
+    </select>
+
+    <select id="showOrders" parameterType="com.ztgm.mall.pojo.Order" resultMap="BaseResultOrder">
+      SELECT distinct o.* FROM mall_order o left join mall_order_detail d on o.id=d.order_id
+      left join mall_commodity_instance i on d.commondity_instance_id=i.id
+      left join mall_commodity m on i.commodity_id=m.id
+      WHERE o.state != 7
+     	<if test=" userId !=null and userId !='' ">
+			AND o.user_id = #{userId}
+		</if>
+		<if test=" state !=null and state !='' ">
+			AND o.state = #{state}
+		</if>
+		<if test=" goodName !=null and goodName !='' ">
+			AND m.name like contact('%',#{goodName},'%')
+		</if>
+  <if test="startTime!=null and startTime !=''">
+            and o.create_time &gt; #{startTime}
+        </if>
+        <if test="endTime!=null and endTime !=''">
+            and o.create_time &lt; #{endTime}
+        </if>
+
+		<if test=" sortName !=null and sortName !='' ">
+			order by  o.${sortName} ${sortOrder}
+		</if>
+
+
+
+  </select>
+
+    <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.Order">
+        insert into mall_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="payMoney != null">
+                pay_money,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="payTime != null">
+                pay_time,
+            </if>
+            <if test="payType != null">
+                pay_type,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="deliveryAddressId != null">
+                delivery_address_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="payMoney != null">
+                #{payMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payTime != null">
+                #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryAddressId != null">
+                #{deliveryAddressId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.Order">
+        update mall_order
+        <set>
+            <if test="payMoney != null">
+                pay_money = #{payMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryAddressId != null">
+                delivery_address_id = #{deliveryAddressId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectOrderStaticsList" resultType="java.util.HashMap">
+        SELECT
+        mall_user.id userId,
+        mall_user.nickname userNickName,
+        mall_user.name userName,
+        mall_user.phone userPhone,
+        mall_user.email userEmail,
+        mall_user.state userState,
+        count(mallOrder.id) orderCount,
+        sum(mallOrder.pay_money) totalPrice,
+        mallOrderDetail.goodsCount goodsCount
+        FROM mall_user
+        LEFT JOIN (select * from mall_order
+        where 1=1
+        <if test="startTime!=null and startTime !=''">
+            and mall_order.create_time &gt; #{startTime}
+        </if>
+        <if test="endTime!=null and endTime !=''">
+            and mall_order.create_time &lt; #{endTime}
+        </if>
+        <if test="orderStatus!=0">
+            and mall_order.state=#{orderStatus}
+        </if>) mallOrder on mall_user.id = mallOrder.user_id
+        LEFT JOIN (select mall_order_detail.order_id,sum(mall_order_detail.number) goodsCount from mall_order_detail GROUP BY mall_order_detail.order_id) mallOrderDetail on mallOrder.id = mallOrderDetail.order_id
+        where 1=1
+        <if test="customName!=null and customName !=''">
+            and mall_user.nickname like CONCAT ('%',#{customName },'%')
+        </if>
+    </select>
+</mapper>

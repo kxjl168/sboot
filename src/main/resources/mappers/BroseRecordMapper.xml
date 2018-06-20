@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.BroseRecordMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.BroseRecord">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="commondity_id" jdbcType="VARCHAR" property="commondityId" />
+    <result column="commondity_instance_id" jdbcType="VARCHAR" property="commondityInstanceId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="BIT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, commondity_id, commondity_instance_id, create_time, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mall_brose_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_brose_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.BroseRecord">
+    insert into mall_brose_record (id, user_id, commondity_id, 
+      commondity_instance_id, status
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{commondityId,jdbcType=VARCHAR}, 
+      #{commondityInstanceId,jdbcType=VARCHAR}, #{status,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.BroseRecord">
+    insert into mall_brose_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="commondityId != null">
+        commondity_id,
+      </if>
+      <if test="commondityInstanceId != null">
+        commondity_instance_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="commondityId != null">
+        #{commondityId,jdbcType=VARCHAR},
+      </if>
+      <if test="commondityInstanceId != null">
+        #{commondityInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.BroseRecord">
+    update mall_brose_record
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="commondityId != null">
+        commondity_id = #{commondityId,jdbcType=VARCHAR},
+      </if>
+      <if test="commondityInstanceId != null">
+        commondity_instance_id = #{commondityInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.BroseRecord">
+    update mall_brose_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      commondity_id = #{commondityId,jdbcType=VARCHAR},
+      commondity_instance_id = #{commondityInstanceId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectOrderVisitCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*) from mall_brose_record where create_time >= #{createTime,jdbcType=TIMESTAMP}
+  </select>
+  <select id="selectRecentVisitList" parameterType="java.lang.String" resultType="java.util.HashMap">
+    select mall_commodity.id,mall_commodity.name,mall_commodity_instance.price,mall_commodity_instance.status,mall_file.http_relative_path image,COUNT(DISTINCT(mall_brose_record.commondity_instance_id)) distinctNum
+    FROM mall_brose_record
+    LEFT JOIN mall_commodity_instance ON mall_brose_record.commondity_instance_id = mall_commodity_instance.id
+    LEFT JOIN mall_commodity ON mall_commodity_instance.commodity_id = mall_commodity.id
+    LEFT JOIN mall_commondity_image ON mall_commodity.id = mall_commondity_image.commondity_id
+    LEFT JOIN mall_file ON mall_commondity_image.id = mall_file.id
+    where mall_brose_record.user_id=#{userId,jdbcType=VARCHAR}
+</select>
+</mapper>

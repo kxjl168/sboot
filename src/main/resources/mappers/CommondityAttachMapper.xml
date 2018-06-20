@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.CommondityAttachMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.CommondityAttach">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="commondity_id" jdbcType="VARCHAR" property="commondityId" />
+    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
+     <result column="sort" jdbcType="INTEGER" property="sort" />
+    
+     
+      <association property="fileinfo"  column="file_id" 
+			select="com.ztgm.mall.dao.SvrFileInfoMapper.selectByPrimaryKey"
+			javaType="com.ztgm.mall.pojo.SvrFileInfo"/>
+    
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, commondity_id, file_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mall_commondity_attach
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+     <delete id="deleteByGoodsId" parameterType="java.lang.String">
+     delete from mall_commondity_attach
+    where commondity_id = #{id,jdbcType=VARCHAR}
+   </delete>
+  
+         <select id="selectCommondityAttachListByCommodityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select 
+    instance.*
+    from mall_commondity_attach instance 
+    where commondity_id=#{id}  order by sort asc
+  </select>
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_commondity_attach
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.CommondityAttach">
+    insert into mall_commondity_attach (id, commondity_id, file_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{commondityId,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.CommondityAttach">
+    insert into mall_commondity_attach
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="commondityId != null">
+        commondity_id,
+      </if>
+      <if test="fileId != null">
+        file_id,
+      </if>
+        
+        <if test="sort != null">
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="commondityId != null">
+        #{commondityId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null">
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+       <if test="sort != null">
+        #{sort},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.CommondityAttach">
+    update mall_commondity_attach
+    <set>
+      <if test="commondityId != null">
+        commondity_id = #{commondityId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null">
+        file_id = #{fileId,jdbcType=VARCHAR},
+      </if>
+        <if test="sort != null">
+        sort=#{sort}
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.CommondityAttach">
+    update mall_commondity_attach
+    set commondity_id = #{commondityId,jdbcType=VARCHAR},
+      file_id = #{fileId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

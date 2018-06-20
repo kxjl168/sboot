@@ -126,7 +126,7 @@ function loadMenuTree(role_id)
 				chkboxType : {"Y": "ps", "N": "ps"},
 				chkStyle : "checkbox",
 				enable : true,
-				nocheckInherit : false,
+				nocheckInherit : true,
 				radioType : "level"
 				},
 			view : {
@@ -137,7 +137,7 @@ function loadMenuTree(role_id)
 			},
 			edit : {
 				enable : false,
-				editNameSelectAll : true,
+				editNameSelectAll : false,
 			//	renameTitle : renameTitle, // 编辑按钮说明文字
 			//	removeTitle : removeTitle, // 删除按钮说明文字
 			//	showRemoveBtn : showRemoveBtn, // 是否显示移除按钮

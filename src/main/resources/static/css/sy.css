@@ -1,0 +1,425 @@
+		ul,ol{
+	    	list-style-type: none;
+	    	margin: 0;
+	    	padding: 0;
+	    }
+	    .h1, .h2, .h3, h1, h2, h3{
+	    	margin: 0;
+	    }
+		 /*右侧登录模块*/
+	    .loginps{
+	    	position: relative;
+	    	z-index: 9999;
+	    }
+		.login-bg{
+			 width: 230px;
+			 height: 328px;
+			 background: #FFFFFF;
+			 float: right;
+			 top: 0;
+			 right: 0;
+			 position: absolute;
+			 padding: 10px;
+		}
+		.logintext{
+			height: 65px;
+		}
+		.tx{
+			float: left;
+		}
+		.logintext dl{
+			float: left;
+			padding-left: 15px;
+		}
+		.logintext dl dd{
+			color: #999999;
+			font-size: 12px;
+			padding-top: 5px;
+		}
+		.logintext dl dd strong{
+			color: #EE3F40;
+		}
+		.btnys{
+			width: 98px;
+			height: 30px;
+			padding-top: 3px;
+		}
+		.loginancolor{
+			background-color: #21bce9;
+            border-color:#21bce9;
+		}
+		.loginancolor:hover {
+		    background-color: #199ED8;
+		    border-color: #199ED8;
+		}
+        .zytext dl{
+        	padding: 15px 0;
+        }
+		.zytext dl dd{
+			float: left;
+			padding: 0px 9px;
+			
+		}
+		.zhuce{
+			display: block;
+		}
+		.loginxx{
+			display: none;
+		}
+		.a-box{
+			height: 196px;
+		}
+		.ddzt-text dl{
+			float: left;
+		}
+		.ddzx dl{
+			padding: 0px 12px 0px 12px;
+			text-align: center;
+			
+		}
+		.ddzx dl dt span{
+			font-size: 16px;
+		}
+		.textcolor dl:first-child dd{
+			color: #EE3F40;
+		}
+		.textcolor dl dt span{
+			color: #EE3F40;
+		}
+		
+		.guanggao{
+			width: 210px;
+			height: 112px;
+			background: #F9F9F9;
+			padding-top: 8px;
+		}
+		.guanggao dl{
+			font-size: 12px;
+		}
+		.rmhdtu{
+			float: left;
+			height: 96px;
+		}
+		.ggtext{
+			float: left;
+			padding-left: 6px;
+		}
+		.ggtext dd{
+			padding-top: 5px;
+		}
+		.ggtext dd a{
+			color: #333333;
+		}
+		.ggtext dd:first-child a{
+			color:#EE3F40 ;
+		}
+		.ggtext dl dd em {
+		    border: 1px solid #828282;
+		    height: 0px;
+		    display: inline-block;
+		    vertical-align: 3px;
+		    margin-right: 6px;
+		}
+		
+	    /*热门商品*/
+	   .dhrk{
+			height: 350px;
+			background: #F2F2F2;
+		}
+	    .re-biaoti{
+	    	padding-top: 15px;
+	    	margin-bottom: 10px;
+	    }
+	    .re-biaoti span{
+	    	padding-left: 6px;
+	    	font-size: 16px;
+	    	font-weight: bold;
+	    }
+	    .hdlist li,.gglist li{
+	    	width: 292px;
+	    	height: 130px;
+	    	background-repeat: no-repeat;
+	    	list-style: none;
+	    	float: left;
+	    	margin: 5px 5px 0 0;
+	    	color: #FFFFFF;
+	    }
+	    .hdlist li:nth-child(1){
+	    	background: url(../img/1.png);
+	    }
+	    .hdlist li:nth-child(2){
+	    	background: url(../img/2.png);
+	    }
+	    .hdlist li:nth-child(3){
+	    	background: url(../img/3.png);
+	    }
+	    .hdlist li:nth-child(4){
+	    	background: url(../img/4.png);
+	    }
+
+        .gglist li:nth-child(1){
+	    	background: url(../img/5.png);
+	    }
+	    .gglist li:nth-child(2){
+	    	background: url(../img/6.png);
+	    }
+	    .gglist li:nth-child(3){
+	    	background: url(../img/7.png);
+	    }
+	    .gglist li:nth-child(4){
+	    	background: url(../img/8.png);
+	    }
+	    .textstyle li dl dt{
+	    	font-size: 16px;
+	    	font-weight: bold;
+	    }
+	    .textstyle li dl dd span{
+	    	font-size: 14px;
+	    }
+	    .textstyle li dl{
+	    	padding: 20px 20px 0px 20px;
+	    }
+	    .textstyle li dl dd{
+	    	margin-top: 5px;
+	    }
+	    .chumo:hover .jinru{
+	    	background: #ffffff;	
+	    }
+	    .chumo:hover .jinru a{
+	    	color: #333333;
+	    }
+	    .jinru{
+	    	width: 80px;
+	    	height: 24px;
+	    	border:1px solid #FFFFFF;
+	    	border-radius: 50px;
+	    	margin-left: 20px;
+	    	text-align: center;
+	    }
+	    .jinru a{
+	    	color: #FFFFFF;
+	    	line-height: 20px;
+	    	text-decoration: none;
+	    }
+	    .chanpintu{
+	    	float: right; 
+	    	padding: 20px 15px 0px 0px;
+	    }
+	     /*商品展示*/
+	    .juli{
+	    	margin-top: 20px;
+	    }
+	    .cp-biaoti{
+	    	height: 30px;
+	    	line-height: 30px;
+	    	margin-bottom: 10px;
+	    }
+	    .cp-biaoti h2{
+	    	font-size: 20px;
+	    	font-weight: bold;
+	    	float: left;
+	    	display: block;
+	    	line-height: 30px;
+	    }
+	    .cp-biaoti-color01 h2 strong{
+	    	color: #199ED8;
+	    }
+	    .cp-biaoti-color02 h2 strong{
+	    	color: #40BFD1;
+	    }
+	    .cp-biaoti-color03 h2 strong{
+	    	color: #FFAB39;
+	    }
+	    .cp-biaoti-color04 h2 strong{
+	    	color: #72A724;
+	    }
+	    .cp-biaoti-color05 h2 strong{
+	    	color: #5275D1;
+	    }
+	    .cp-biaoti-color06 h2 strong{
+	    	color: #6081A7;
+	    }
+	    .cp-biaoti-color07 h2 strong{
+	    	color: #1A5DA8;
+	    }
+	    .cp-right{
+	    	float: right;
+	    	line-height: 30px;
+	    }
+	    .cp-right a,.cp-right span{
+	    	font-size: 14px;
+	    	color: #666666;
+	    	text-decoration: none;
+	    	padding-left: 10px;
+	    }
+	    .cp-right a:last-child{
+	    	color: #333333;
+	    }
+	    .cp-right-hover01 a:hover{
+	    	color: #199ED8;
+	    }
+	    .cp-right-hover02 a:hover{
+	    	color: #40BFD1;
+	    }
+	    .cp-right-hover03 a:hover{
+	    	color: #FFAB39;
+	    }
+	    .cp-right-hover04 a:hover{
+	    	color: #72A724;
+	    }
+	    .cp-right-hover05 a:hover{
+	    	color: #5275DA;
+	    }
+	    .cp-right-hover06 a:hover{
+	    	color: #6081A7;
+	    }
+	    .cp-right-hover07 a:hover{
+	    	color: #1A5DA8;
+	    }
+	    .cp-top{
+	    	color: #FFFFFF;
+	    }
+	    .cp-top dl dt{
+	    	font-weight: bold;
+	    	font-size: 24px;
+	    }
+	    .cp-list{
+	    	height: 492px;
+	    }
+	    .cp-list-color01{
+	    	border-top: 2px solid #1A71D6;
+	    }
+	    .cp-list-color02{
+	    	border-top: 2px solid #40BFD1;
+	    }
+	    .cp-list-color03{
+	    	border-top: 2px solid #FFAB39;
+	    }
+	    .cp-list-color04{
+	    	border-top: 2px solid #72A724;
+	    }
+	    .cp-list-color05{
+	    	border-top: 2px solid #5275DA;
+	    }
+	    .cp-list-color06{
+	    	border-top: 2px solid #6081A7;
+	    }
+	    .cp-list-color07{
+	    	border-top: 2px solid #1A5DA8;
+	    }
+	    .cp-list-left{
+	    	background-repeat: no-repeat;
+	    	float: left;
+	    	width: 240px;
+	    	height: 490px;
+	    	padding: 20px;
+	    	text-align: center;
+	    }
+	    .cp-list-right{
+	    	float: right;
+	    }
+	    .cp-1F{
+	    	background:url(../img/11.png);
+	    }
+	    .cp-2F{
+	    	background:url(../img/22.png);
+	    }
+	    .cp-3F{
+	    	background:url(../img/33.png);
+	    }
+	    .cp-4F{
+	    	background:url(../img/44.png);
+	    }
+	    .cp-5F{
+	    	background:url(../img/55.png);
+	    }
+	    .cp-6F{
+	    	background:url(../img/66.png);
+	    }
+	    .cp-7F{
+	    	background:url(../img/77.png);
+	    }
+	    .cpgm{
+	    	width: 237px;
+	    	height: 245px;
+	    	background:#FFFFFF;
+	    	border-right: 1px solid #ccc;
+	    	border-top: 1px solid #ccc;
+	    	float: left;
+	    	padding: 10px;
+	    }
+	    .cp-list-right .cpgm:first-child{
+	    	border-left: 1px solid #ccc;
+	    }
+	    .cp-list-right ul:last-child li{
+	    	border-bottom: 1px solid #ccc;
+	    }
+	    .cpgmtu{
+	    	margin: auto;
+	    	width: 210px;
+	    	height: 170px;
+	    	background: #FFFFFF;
+	    	line-height: 150px;
+	    	text-align: center;
+	    }
+	    .cptext{
+	    	width: 220px;
+	    	text-align: left;
+	    	margin: auto;
+	    	margin-top: 10px;
+	    }
+	    .cptext span{
+	    	font-size:14px;
+	    	color: #333333;
+	    }
+	    .cptext span:last-child{
+	    	color: #EE3F40;
+	    }
+	    .cp-middle{
+	    	height: 330px;
+	    	line-height: 300px;
+	    }
+	    .cp-middle img{
+	    	text-align: center;
+	    }
+	    .cp-bottom{
+	    	margin-top:20px;
+	    }
+	    .button-fist,.button-second{
+	    	width: 90px;
+	    	height: 30px;
+	    }
+	    .button-color01{
+	    	background: #1A71D6;
+	    }
+	    .button-color02{
+	    	background: #40BFD1;
+	    }
+	    .button-color03{
+	    	background: #FFAB39;
+	    }
+	    .button-color04{
+	    	background: #72A724;
+	    }
+	    .button-color05{
+	    	background: #5275DA;
+	    }
+	    .button-color06{
+	    	background: #6081A7;
+	    }
+	    .button-color07{
+	    	background: #1A5DA8;
+	    }
+	    .button-fist a,.button-second a{
+	    	color: #FFFFFF;
+	    	font-size: 14px;
+	    	line-height: 30px;
+	    	text-decoration: none;
+	    }
+	    .button-fist{
+	    	margin-right: 15px;
+	    	float: left;
+	    }
+	    .button-second{
+	    	float: right;
+	    	}

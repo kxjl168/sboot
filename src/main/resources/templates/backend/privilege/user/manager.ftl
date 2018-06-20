@@ -195,6 +195,6 @@
 
 
 	<script src="/js/ztree/jquery.ztree.all.min.js"></script>
-	<script src="/vendor/user/js/user.js"></script>
+	<script src="/vendor/privilege/js/manager.js"></script>
 </body>
 </html>

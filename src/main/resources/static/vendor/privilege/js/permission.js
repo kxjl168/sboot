@@ -1,5 +1,9 @@
 var action="new";
 $(function() {
+	
+	
+	loadMenuTree("");
+	
 	groupTable();
 
 	initValidate();
@@ -7,6 +11,29 @@ $(function() {
 	
 	/*showPopover($("#message"),
 			"xxxxx");*/
+	
+	
+	
+	$("#type").change(function(){
+		
+		changeParentList();
+	});
+	
+	$("#q_pid").click(function(){
+		showMenu();
+	})
+	
+
+	$("#cleanselect").click(function(){
+		var menuids="";
+	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+	zTree.cancelSelectedNode();
+	$("q_pid").val("");
+	hideMenu();
+	})
+	
+	
+	
 	
 	
 	$("#btnAdd").click(function() {
@@ -22,12 +49,20 @@ $(function() {
 		$("#sortstring").val("");
 	
 		
-//		$("#type").find("option[value='" + data.type + "']").attr(
-//				"selected", true);
+
+		$('#type').get(0).selectedIndex = 1;
 //
 //		$("#available").find("option[value='" + data.type + "']").attr(
 //				"selected", true);
 
+		
+		
+		changeParentList(function(){
+				
+			$('#parentid').get(0).selectedIndex = 1;
+		})
+		
+		
 
 		$("#id").removeAttr("readonly")
 		$("#myModal").modal();
@@ -100,6 +135,112 @@ $(function() {
 					});
 });
 
+
+/**
+ * 行点击链接 显示父节点下的数据
+ * @param id
+ * @param name
+ * @returns
+ */
+function showparent(id,name)
+{
+	//showMenu();
+	var menuids="";
+	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+	if(zTree!=null)
+		{
+	
+	
+	var nd=zTree.getNodesByParam("id", id, null);
+	zTree.selectNode(nd[0]);
+	
+	$("#q_pid").val(name);
+	setTimeout(() => {
+		doquery();	
+	}, 500);
+	
+		}
+}
+
+function showMenu() {
+	var cityObj = $("#q_pid");
+	var cityOffset = $("#q_pid").offset();
+	//$("#menuContent").slideDown("fast");
+	$("#menuContent").show();
+
+	$("body").bind("mousedown", onBodyDown);
+}
+function hideMenu() {
+	
+	var menuids="";
+	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+	if(zTree!=null)
+		{
+	var nodes = zTree.getSelectedNodes();
+	for ( var i = 0, l = nodes.length; i < l; i++) {		
+		menuids+=nodes[i].name+"";
+
+	}
+		}
+	
+	$("#q_pid").val(menuids);
+	
+	$("#menuContent").fadeOut("fast");
+	$("body").unbind("mousedown", onBodyDown);
+}
+function onBodyDown(event) {
+	if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+		hideMenu();
+	}
+}
+
+
+/**
+ * 根据权限菜单类型/获取父节点下拉框选项
+ * @param successCallback
+ * @returns
+ */
+function changeParentList(successCallback){
+	var type=$("#type").val()-1;
+	
+	var data="type="+type+ "&pageSize=40";
+	$.ajax({
+		type : "post",
+		url : "/privilege/permission/list",
+		data : data,
+		async : false,
+		dataType : "json",
+		success : function(data) {
+
+			var lst= eval(data.rows);
+			
+			var html="";
+			if(lst.length)
+			{
+			$.each(lst,function(index,item){
+				if(index==0)
+				html+=	' <option value="'+item.id+'"  selected="selected" >'+item.name+'</option> ';
+				else
+					html+=	' <option value="'+item.id+'"  >'+item.name+'</option> ';
+				
+			});
+				}
+			else
+				{
+				html+=	' <option value="0"  selected="selected" >根节点</option> ';
+				}
+			$("#parentid").html(html);
+			
+			
+			if(typeof(successCallback)=='function')
+				{
+				successCallback();
+				}
+			
+		}
+	});
+}
+
 function initValidate() {
 	$("#mform").bootstrapValidator({
 		feedbackIcons : {
@@ -129,9 +270,9 @@ function initValidate() {
 			,
 			percode : {
 				validators : {
-				/*	notEmpty : {// 非空
+					notEmpty : {// 非空
 						message : '权限代码不能为空'
-					}*/
+					}
 				}
 			}
 
@@ -205,12 +346,31 @@ function groupTable() {
 		uniqueId : "id", // 每一行的唯一标识，一般为主键列
 		// queryParamsType : "limit",
 		queryParams : function queryParams(params) { // 设置查询参数
+			
+			//permission ids;
+			var menuids="";
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			if(zTree!=null)
+				{
+			var nodes = zTree.getSelectedNodes();
+			for ( var i = 0, l = nodes.length; i < l; i++) {		
+				menuids+=nodes[i].id+"";
+
+			}
+				}
+			
+			
 			var param = {
 				pageSize : params.limit, // 每页要显示的数据条数
 				offset : params.offset, // 每页显示数据的开始行号
 				sort : params.sort, // 要排序的字段
 				sortOrder : params.order, // 排序规则
 				name : $("#q_name").val(),
+				//pid:$("q_pid").val(),
+				pid:menuids,
+				
+				
+				
 			};
 			return param;
 		},
@@ -241,8 +401,9 @@ function groupTable() {
             	   return "一级菜单";
                else if(value=="2")
             	   return "二级菜单";
-
-                 return str;
+               else if(value=="3")
+            	   return "按钮";
+                 return value;
              }
 		
 		}, {
@@ -255,12 +416,29 @@ function groupTable() {
 			title : '权限代码字符串',
 			align : 'center',
 			valign : 'middle'
-		}, {
+		}
+	/*	, {
 			field : 'parentid',
 			title : '父结点id',
 			align : 'center',
 			valign : 'middle'
-		}, {
+		}*/
+		, {
+			field : 'parentname',
+			title : '父结点',
+			align : 'center',
+			valign : 'middle',
+			 formatter: function (value, row, index) {
+
+				 var html="根节点";
+				 if(row.parentid!=0)
+	                html="<a href='#' onclick='showparent(\""+row.parentid+"\",\""+row.parentname+"\")' >"+row.parentname+"</a>";
+
+	                 return html;
+	             }
+		}
+		, {
+			
 			field : 'sortstring',
 			title : '排序号',
 			align : 'center',
@@ -354,12 +532,20 @@ window.groupEvents = {
 					$("#id").val(data.id);
 					$("#name").val(data.name);
 
-					$("#type").find("option[value='" + data.type + "']").attr(
-							"selected", true);
+					$("#type").val(data.type);
+					
+					
+					changeParentList(function(){
+						$('#parentid').val(data.parentid);// get(0).selectedIndex = 1;
+					})
+					
+					
 
 					$("#url").val(data.url);
 					$("#percode").val(data.percode);
-					$("#parentid").val(data.parentid);
+					
+					//$("#parentid").val(data.parentid);
+					
 					$("#sortstring").val(data.sortstring);
 
 					$("#available").find(
@@ -376,11 +562,102 @@ window.groupEvents = {
 
 };
 
+
+function loadMenuTree(role_id)
+{
+	
+	var setting = {
+			isSimpleData : true, // 数据是否采用简单 Array 格式，默认false
+			treeNodeKey : "id", // 在isSimpleData格式下，当前节点id属性
+			treeNodeParentKey : "pId", // 在isSimpleData格式下，当前节点的父节点id属性
+			
+			/*check : {
+				autoCheckTrigger : false,
+				chkboxType : {"Y": "ps", "N": "ps"},
+				chkStyle : "checkbox",
+				enable : true,
+				nocheckInherit : false,
+				radioType : "level"
+				},*/
+			view : {
+				showLine : true, // 是否显示节点间的连线
+			//	addHoverDom : addHoverDom, // 增加节点 点击新增
+			//	removeHoverDom : removeHoverDom,
+				selectedMulti : false
+			},
+			edit : {
+				enable : false,
+				editNameSelectAll : false,
+			//	renameTitle : renameTitle, // 编辑按钮说明文字
+			//	removeTitle : removeTitle, // 删除按钮说明文字
+			//	showRemoveBtn : showRemoveBtn, // 是否显示移除按钮
+			//	showRenameBtn : showRenameBtn
+			// 是否显示编辑按钮
+			},
+			callback : {
+				onClick:function(){
+					hideMenu();
+				}
+			//	beforeDrag : beforeDrag,
+			//	beforeEditName : beforeEditName, // 编辑节点
+			//	beforeRemove : beforeRemove, // 删除节点
+			//	beforeRename : beforeRename,
+			//	onRemove : onRemove,
+			//	onRename : onRename,
+			//	beforeDrop : beforeDrop,
+			//	beforeClick : beforeClick,
+			//	onCheck : onCheck
+			},
+			data : {
+				simpleData : {
+					enable : true,
+					idKey : "id",
+					pIdKey : "pId",
+					rootPID : 0
+				}
+			}
+		};
+	
+	
+	//var role_id=$("#role_id").val();
+	
+	// 防止页面乱码现象
+	$.ajax({
+		async : false,
+		cache : false,
+		type : 'post',
+		data : {
+			role_id : role_id
+		},
+		dataType : "json",
+		url : "/privilege/permission/getMenuTreeSecond.do",// 请求的action路径
+		error : function() {// 请求失败处理函数
+			error('请求失败');
+		},
+		success : function(data) { // 请求成功后处理函数
+			var data1 = eval('[' + data + ']');
+//			if (typeof (data1.name) == undefined) {
+//				data1.name = '';
+//			}
+			zNodes = data1; // 把后台封装好的简单Json格式赋给treeNodes
+
+			
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+		}
+	});
+
+
+	
+	
+}
+
+
 function doquery() {
 	var opt = {
 		url : '/privilege/permission/list',
 		silent : true,
-
+		pageNumber :1
 	};
 	$("#table_list").bootstrapTable('refresh', opt);
 }

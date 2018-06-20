@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.CommodityOptionMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.CommodityOption">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="commondity_id" jdbcType="VARCHAR" property="commondityId" />
+    <result column="option_def_id" jdbcType="VARCHAR" property="optionDefId" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+    
+        <association property="option"  column="option_def_id" 
+			select="com.ztgm.mall.dao.OptionDefMapper.selectByPrimaryKey"
+			javaType="com.ztgm.mall.pojo.OptionDef"/>
+			
+			
+			
+	<!-- <collection property="optionvals" ofType="com.ztgm.mall.pojo.CommodityOption"
+                select="selectSameCommodityOptionList" column="{cid=commondity_id,oid=option_def_id}"/> -->
+	
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, commondity_id, option_def_id, value, sort
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mall_commodity_option
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+     
+   <delete id="deleteByGoodsId" parameterType="java.lang.String">
+     delete from mall_commodity_option
+    where commondity_id = #{id,jdbcType=VARCHAR}
+   </delete>
+  
+  
+   <select id="selectSameCommodityOptionList" parameterType="java.util.Map" resultMap="BaseResultMap">
+  select * 
+    from mall_commodity_option instance 
+    where 1=1 and status=1 and  commondity_id=#{cid} and option_def_id=#{oid}   order by sort
+  </select>
+  
+  
+  
+        <select id="selectDistinctCommodityOptionListByCommodityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select distinct
+    instance.*
+    from mall_commodity_option instance 
+    where 1=1 and status=1 and commondity_id=#{id} group by option_def_id  order by sort
+  </select>
+  
+  
+  
+       <select id="selectCommodityOptionListByCommodityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select 
+    instance.*
+    from mall_commodity_option instance 
+    where 1=1 and status=1
+    and  commondity_id=#{id}  order by sort
+  </select>
+  
+  
+    <select id="selectCommodityOptionList" parameterType="com.ztgm.mall.pojo.CommodityOption" resultMap="BaseResultMap">
+  select 
+    instance.*
+    from mall_commodity_option instance 
+    where 1=1 and status=1
+    
+		<if test=" commondityId !=null and commondityId !='' ">
+			AND instance.commondity_id=commondityId
+		</if>
+    
+  </select>
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_commodity_option
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.CommodityOption">
+    insert into mall_commodity_option (id, commondity_id, option_def_id, 
+      value, sort)
+    values (#{id,jdbcType=VARCHAR}, #{commondityId,jdbcType=VARCHAR}, #{optionDefId,jdbcType=VARCHAR}, 
+      #{value,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.CommodityOption">
+    insert into mall_commodity_option
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="commondityId != null">
+        commondity_id,
+      </if>
+      <if test="optionDefId != null">
+        option_def_id,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+       <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="commondityId != null">
+        #{commondityId,jdbcType=VARCHAR},
+      </if>
+      <if test="optionDefId != null">
+        #{optionDefId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+       <if test="status != null">
+       #{status},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.CommodityOption">
+    update mall_commodity_option
+    <set>
+      <if test="commondityId != null">
+        commondity_id = #{commondityId,jdbcType=VARCHAR},
+      </if>
+      <if test="optionDefId != null">
+        option_def_id = #{optionDefId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+       <if test="status != null">
+        status=#{status},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.CommodityOption">
+    update mall_commodity_option
+    set commondity_id = #{commondityId,jdbcType=VARCHAR},
+      option_def_id = #{optionDefId,jdbcType=VARCHAR},
+      value = #{value,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

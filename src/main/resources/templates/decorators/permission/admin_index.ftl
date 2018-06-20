@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
 
-    <title>中通国脉IOT管理平台</title>
+    <title>中通国脉Mall管理平台</title>
     <link rel="icon" href="/img/ztgm.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="/img/ztgm.ico" type="image/x-icon"/>
 
@@ -42,7 +42,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="/manager/admin/index.action"><img src="/img/logo.png"/></a>
+            <a class="navbar-brand" href="/manager/admin/index.action"><img src="/img/logo2.png"/></a>
 
         <!--<a class="navbar-brand"
                href="/index">中通国脉IOT管理平台 <#include "../../common/version.ftl"/></a>-->
@@ -50,6 +50,9 @@
 
 
         <ul class="nav navbar-top-links navbar-right">
+         <li><a href="/public/index.action"><i
+                            class="fa fa-gear fa-fw"></i> 返回前台</a>
+                    </li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-user fa-fw"></i><#if principal??>${principal.userName}</#if>&nbsp;<i
@@ -62,9 +65,8 @@
                     <li><a href=""><i
                             class="fa fa-gear fa-fw"></i> 权限转移</a>
                     </li>
-                    <li><a href="/manager/group/showMemberList"><i
-                            class="fa fa-gear fa-fw"></i> 权限添加</a>
-                    </li>-->
+                    -->
+                   
                     <li class="divider"></li>
                     <li><a href="/logout.action"><i class="fa fa-sign-out fa-fw"></i>
                         退出登录</a>

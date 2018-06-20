@@ -1,0 +1,61 @@
+.w1190 {
+    width: 1190px;
+    margin: auto;
+}
+		ul,ol{
+	    	list-style-type: none;
+	    	margin: 0;
+	    	padding: 0;
+	    }
+	    .h1, .h2, .h3, h1, h2, h3{
+	    	margin: 0;
+	    }
+.fivetext{
+	background: #1EBFDB;
+}
+.bottombj{
+	background: url(../img/bottombj.png);
+	background-repeat: no-repeat;
+	height: 334px;
+}
+.bottomtext li{
+	padding-top: 30px;
+	width: 290px;
+	text-align: left;
+	float: left;
+}
+.bottomtext li:last-child{
+	width: 150px;
+}
+.bottomtext li dl dt{
+	font-size: 16px;
+	color: #FFFFFF;
+}
+.bottomtext li dl dd{
+	font-size: 14px;
+	color: #999999;
+	padding-top: 15px;
+}
+.bottomtext li dl dd:hover{
+	color: #FFFFFF;
+    text-decoration: underline;
+}
+.guanzhuwx{
+	float: right;
+}
+.guanzhuwx li{
+	text-align: center;
+}
+.bottombanner{
+	height: 50px;
+	background: #000000;
+}
+.bottombanner p{
+	color: #CCCCCC;
+	font-size: 14px;
+	text-align: center;
+	line-height: 50px;
+}
+.bottombanner p span{
+	padding-left: 30px;
+}

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
 
-    <title>中通国脉IOT管理平台</title>
+    <title>中通国脉Mall管理平台</title>
     <link rel="icon" href="/img/ztgm.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="/img/ztgm.ico" type="image/x-icon"/>
 
@@ -43,7 +43,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand"
-               href="/index">中通国脉IOT管理平台 <#include "../../common/version.ftl"/></a>
+               href="/index">中通国脉Mall管理平台 <#include "../../common/version.ftl"/></a>
         </div>
     </nav>
     <div id="container">

@@ -191,8 +191,8 @@ public class RoleServiceImpl implements RoleService {
 				return rtn;
 			}
 			roleMapper.updateByPrimaryKeySelective(record);
-			if (true)
-				throw new Exception();
+		/*	if (true)
+				throw new Exception();*/
 			/*
 			 * if(true) throw new RuntimeException();
 			 */

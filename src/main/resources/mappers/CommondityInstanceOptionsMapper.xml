@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.CommondityInstanceOptionsMapper">
+  <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.CommondityInstanceOptions">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="commondity_instance_id" jdbcType="VARCHAR" property="commondityInstanceId" />
+    <result column="commodity_option_id" jdbcType="VARCHAR" property="commodityOptionId" />
+    
+     <result column="option_val_md5" jdbcType="VARCHAR" property="optionValMd5" />
+   
+     
+       <association property="commodity_option"  column="commodity_option_id" 
+			select="com.ztgm.mall.dao.CommodityOptionMapper.selectByPrimaryKey"
+			javaType="com.ztgm.mall.pojo.CommodityOption"/>
+     
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, commondity_instance_id, commodity_option_id,option_val_md5
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mall_commondity_instance_options
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_commondity_instance_options
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.CommondityInstanceOptions">
+    insert into mall_commondity_instance_options (id, commondity_instance_id, commodity_option_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{commondityInstanceId,jdbcType=VARCHAR}, #{commodityOptionId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+  
+  
+         <select id="selectCommodityOptionListByInstanceId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select 
+    instance.*
+    from mall_commondity_instance_options instance left join  mall_commodity_option opt on instance.commodity_option_id=opt.id
+    where 1=1
+    and opt.status=1
+    and commondity_instance_id=#{id}  order by opt.sort
+  </select>
+  
+  
+  
+  
+  
+  
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.CommondityInstanceOptions">
+    insert into mall_commondity_instance_options
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="commondityInstanceId != null">
+        commondity_instance_id,
+      </if>
+      <if test="commodityOptionId != null">
+        commodity_option_id,
+      </if>
+         <if test="optionValMd5 != null">
+        #{option_val_md5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="commondityInstanceId != null">
+        #{commondityInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityOptionId != null">
+        #{commodityOptionId,jdbcType=VARCHAR},
+      </if>
+      <if test="optionValMd5 != null">
+        #{optionValMd5,jdbcType=VARCHAR},
+      </if>
+      
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.CommondityInstanceOptions">
+    update mall_commondity_instance_options
+    <set>
+      <if test="commondityInstanceId != null">
+        commondity_instance_id = #{commondityInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityOptionId != null">
+        commodity_option_id = #{commodityOptionId,jdbcType=VARCHAR},
+      </if>
+         <if test="optionValMd5 != null">
+       option_val_md5= #{optionValMd5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.CommondityInstanceOptions">
+    update mall_commondity_instance_options
+    set commondity_instance_id = #{commondityInstanceId,jdbcType=VARCHAR},
+      commodity_option_id = #{commodityOptionId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getOptionsByClassify" parameterType="java.util.Map" resultType="java.util.HashMap">
+    select
+      distinct
+      <if test="flag=='opt'">
+        t5.id,t5.name
+      </if>
+      <if test="flag=='optVal'">
+        t3.opt_val_md5 optValMd5,t4.value
+      </if>
+    from `mall_commodity` `t1`,`mall_commodity_instance` t2 ,mall_commondity_instance_options t3 ,mall_commodity_option `t4`,mall_option_def t5
+    where t1.id=t2.`commodity_id` and t2.id=`t3`.commondity_instance_id and t3.commodity_option_id=t4.id and `t4`.`option_def_id`=t5.`id`
+    <if test="flag=='opt'">
+      <if test="1==level">
+        and t1.fst_classify=#{classifyId}
+      </if>
+      <if test="2==level">
+        and t1.scd_classify=#{classifyId}
+      </if>
+      <if test="3==level">
+        and t1.thd_classify=#{classifyId}
+      </if>
+    </if>
+    <if test="flag=='optVal'">
+      and t5.id=#{optDefId}
+    </if>
+  </select>
+
+
+  <select id="getOptionValues" parameterType="java.util.Map" resultType="java.util.HashMap">
+
+  </select>
+</mapper>

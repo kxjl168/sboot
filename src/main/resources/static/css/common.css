@@ -1,3 +1,11 @@
+.loadimg {
+	background: url(/img/loading.gif);
+	width: 100%;
+	height: 100%;
+	display: block;
+	border: 0;
+}
+
 a {
 	text-decoration: none;
 	underline: none;
@@ -210,11 +218,11 @@ embed {
 .panel-body {
 	padding: 15px 0px 15px 0px;
 }
-
+/* 
 .switch {
 	float: right;
 	margin-bottom: 0;
-}
+} */
 
 .switch label {
 	height: 1.3rem;
@@ -428,7 +436,7 @@ input[type="text"] {
 }
 
 .btn-default {
-	width: 80px;
+	min-width: 80px;
 	color: #FFFFFF;
 	background-color: #1cb09a;
 	font-size: 14px;
@@ -503,8 +511,10 @@ input[type="text"] {
 }
 
 .tooltip {
-	background: #bb343478 !important;
+	background: #75acf378 !important;
 	border-radius: 4px;
+	position: fixed !important;
+	top: 69px !important;
 }
 
 .tooltip-inner {
@@ -514,6 +524,152 @@ input[type="text"] {
 	/*  margin-top: 20px; */
 	font-size: 15px;
 	text-align: center;
-	background-color: #e65d47f0;
+	background-color: #4d93adf0;
 	border-radius: 4px;
+}
+
+.tooltip.top .tooltip-arrow {
+	bottom: 0 !important;
+	border-width: 0px 0px 0 !important;
+	border-top-color: #0000 !important;
+}
+
+.toptooltip {
+	margin-top: 30px;
+}
+
+.success.tooltip {
+	background: #67c367; ! important;
+	border-radius: 4px;
+}
+
+.success .tooltip-inner {
+	background-color: #45a545;
+}
+
+.error.tooltip {
+	background: #bb343478 !important;
+	border-radius: 4px;
+}
+
+.error .tooltip-inner {
+	background-color: #e65d47f0 !important;
+}
+
+.rowimg {
+	max-height: 90px;
+}
+
+.menuContent {
+	position: absolute;
+	/* left: 135.266px;
+    top: 105px; */
+	margin-top: -17px;
+	min-width: 171px;
+	z-index: 1040;
+	background: rgb(247, 247, 247);
+	border: 1px solid #8fa5d6e8;;
+}
+
+.menuContent .cleanbtn {
+	padding: 5px;
+	font-size: 13px;
+	/* margin: 5px; */
+	color: #8189c5;
+	/* border-bottom: 1px solid blue; */
+	text-decoration: underline;
+}
+
+.nopadding {
+	padding: 0px !important;
+}
+
+.margin-top-5 {
+	margin-top: 5px;
+}
+
+.select2 {
+	width: auto !important;
+	min-width: 200px;
+	padding-top: 5px !important;
+}
+
+.select_attr {
+	max-width: 100px;
+}
+
+.select2-drop {
+	z-index: 10050 !important;
+}
+
+.select2-search-choice-close {
+	margin-top: 0 !important;
+	right: 2px !important;
+	min-height: 10px;
+}
+
+.select2-search-choice-close:before {
+	color: black !important;
+}
+/*防止select2不会自动失去焦点*/
+.select2-container {
+	z-index: 16000 !important;
+}
+
+.select2-drop-mask {
+	z-index: 15990 !important;
+}
+
+.select2-drop-active {
+	z-index: 15995 !important;
+}
+
+.select2-search input, .select2-search input:focus {
+	width: 100%;
+	height: auto !important;
+	min-height: 26px;
+	padding: 4px 20px 4px 5px;
+	margin: 0;
+	outline: 0;
+	font-family: sans-serif;
+	font-size: 1em;
+	border: 1px solid #aaa;
+	border-radius: 0;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	background: #fff url('select2.png') no-repeat 100% -22px;
+	background: url('select2.png') no-repeat 100% -22px,
+		-webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff),
+		color-stop(0.99, #eee));
+	background: url('select2.png') no-repeat 100% -22px,
+		-webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
+	background: url('select2.png') no-repeat 100% -22px,
+		-moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
+	background: url('select2.png') no-repeat 100% -22px,
+		linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
+}
+
+.select2-search input.select2-active {
+	background: #fff url('select2-spinner.gif') no-repeat 100%;
+	background: url('select2-spinner.gif') no-repeat 100%,
+		-webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff),
+		color-stop(0.99, #eee));
+	background: url('select2-spinner.gif') no-repeat 100%,
+		-webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
+	background: url('select2-spinner.gif') no-repeat 100%,
+		-moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
+	background: url('select2-spinner.gif') no-repeat 100%,
+		linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
+}
+
+.vcenter {
+	vertical-align: middle !important;
+}
+
+.qinput
+{
+	min-width: 220px;
+}
+.padding-bottom-5{
+	padding-bottom: 5px;
 }

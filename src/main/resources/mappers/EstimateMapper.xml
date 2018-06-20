@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ztgm.mall.dao.EstimateMapper">
+    <resultMap id="BaseResultMap" type="com.ztgm.mall.pojo.Estimate">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_detail_id" jdbcType="VARCHAR" property="orderDetailId"/>
+        <result column="commodity_id" jdbcType="VARCHAR" property="commodityId"/>
+        <result column="commodity_instance_id" jdbcType="VARCHAR" property="commodityInstanceId"/>
+        <result column="value" jdbcType="VARCHAR" property="value"/>
+        <result column="stars" jdbcType="INTEGER" property="stars"/>
+        <result column="isanony" jdbcType="INTEGER" property="isanony"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+      
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="good_name" jdbcType="VARCHAR" property="goodName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, user_id, order_id, order_detail_id, commodity_id, commodity_instance_id, value,
+    stars, create_time,isanony,status
+  </sql>
+    <select id="showEstimate" parameterType="com.ztgm.mall.pojo.Estimate" resultMap="BaseResultMap">
+        select
+        estimate.* ,mUser.name user_name,commodity.name good_name
+        from mall_estimate estimate
+        left join mall_user mUser on estimate.user_id=mUser.id
+        left join mall_commodity commodity on estimate.commodity_id=commodity.id
+        where estimate.status != 2
+        <if test="userId !=null and userId !=''">
+            AND estimate.user_id =#{userId}
+        </if>
+          <if test="goodName !=null and goodName !=''">
+            AND commodity.name like CONCAT ('%',#{goodName },'%')
+        </if>
+        <if test="userName !=null and userName !=''">
+            AND mUser.name like CONCAT ('%',#{userName },'%')
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND date_format(estimate.create_time, "%Y-%m-%d") >= #{startTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND date_format(estimate.create_time, "%Y-%m-%d") &lt;= #{endTime}
+        </if>
+        ORDER BY estimate.create_time
+    </select>
+
+    <update id="deleteEstimate" parameterType="com.ztgm.mall.pojo.Estimate">
+        UPDATE mall_estimate
+        SET status = 2
+        WHERE id = #{id}
+    </update>
+    
+
+  
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_estimate
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ztgm.mall.pojo.Estimate">
+    insert into mall_estimate (id, user_id, order_id, 
+      order_detail_id, commodity_id, commodity_instance_id, 
+      value, stars, create_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{orderDetailId,jdbcType=VARCHAR}, #{commodityId,jdbcType=VARCHAR}, #{commodityInstanceId,jdbcType=VARCHAR}, 
+      #{value,jdbcType=VARCHAR}, #{stars,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztgm.mall.pojo.Estimate">
+    insert into mall_estimate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderDetailId != null">
+        order_detail_id,
+      </if>
+      <if test="commodityId != null">
+        commodity_id,
+      </if>
+      <if test="commodityInstanceId != null">
+        commodity_instance_id,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+      <if test="stars != null">
+        stars,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="isanony != null">
+        isanony,
+      </if>
+      
+       <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDetailId != null">
+        #{orderDetailId,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityId != null">
+        #{commodityId,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityInstanceId != null">
+        #{commodityInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="stars != null">
+        #{stars,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="isanony != null">
+        #{isanony},
+      </if>
+       <if test="status != null">
+        #{status},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztgm.mall.pojo.Estimate">
+    update mall_estimate
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDetailId != null">
+        order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityId != null">
+        commodity_id = #{commodityId,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityInstanceId != null">
+        commodity_instance_id = #{commodityInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="stars != null">
+        stars = #{stars,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztgm.mall.pojo.Estimate">
+    update mall_estimate
+    set user_id = #{userId,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
+      commodity_id = #{commodityId,jdbcType=VARCHAR},
+      commodity_instance_id = #{commodityInstanceId,jdbcType=VARCHAR},
+      value = #{value,jdbcType=VARCHAR},
+      stars = #{stars,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

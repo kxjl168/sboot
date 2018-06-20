@@ -608,7 +608,7 @@
                     <img src="/img/welcome/sbgl.png"/>
                 </div>
                 <div class="col-xs-9 text-right">
-                    <div class="huge">${hrefCount.deviceManager}</div>
+                    <div class="huge">--</div>
                     <div>设备管理</div>
                 </div>
             </div>
@@ -623,7 +623,7 @@
                     <img src="/img/welcome/cjgl.png"/>
                 </div>
                 <div class="col-xs-9 text-right">
-                    <div class="huge">${hrefCount.sceneManager}</div>
+                    <div class="huge">--</div>
                     <div>场景管理</div>
                 </div>
             </div>
@@ -640,7 +640,7 @@
                     <img src="/img/welcome/qygl.png"/>
                 </div>
                 <div class="col-xs-9 text-right">
-                    <div class="huge">${hrefCount.regionManager}</div>
+                    <div class="huge">--</div>
                     <div>区域管理</div>
                 </div>
             </div>
@@ -655,7 +655,7 @@
                     <img src="/img/welcome/yjgl.png"/>
                 </div>
                 <div class="col-xs-9 text-right">
-                    <div class="huge">${hrefCount.deviceWarning}</div>
+                    <div class="huge">--</div>
                     <div>设备报警</div>
                 </div>
             </div>
@@ -719,9 +719,9 @@
                     </label>
                     <select class="selectpicker show-tick form-control" data-live-search="true"
                             onchange="getRegionLogCountList(this.value)">
-                    <#list selectYearListMap.regionYearList as regionYear>
+                 <#--    <#list selectYearListMap.regionYearList as regionYear>
                         <option>${regionYear}</option>
-                    </#list>
+                    </#list> --#>
                     </select>
                 </div>
             </div>
@@ -738,9 +738,9 @@
                     </label>
                     <select class="selectpicker show-tick form-control" data-live-search="true"
                             onchange="getSceneLogCountList(this.value)">
-                        <#list selectYearListMap.sceneYearList as sceneYear>
-                            <option>${sceneYear}</option>
-                        </#list>
+                      <#--    <#list selectYearListMap.regionYearList as regionYear>
+                        <option>${regionYear}</option>
+                    </#list> --#>
                     </select>
                 </div>
             </div>

@@ -1,0 +1,48 @@
+	body{
+		font-family: "微软雅黑";
+	}
+	ul,ol{
+	    	list-style-type: none;
+	    	margin: 0;
+	    	padding: 0;
+	    }
+	.h1, .h2, .h3, h1, h2, h3{
+	    	margin: 0;
+	    }
+	.jiage{
+		color: #EE3F40;
+		font-size: 14px;
+	}
+	/*按钮共用样式*/
+	.btnys{
+			width: 98px;
+			height: 30px;
+			padding-top: 3px;
+		}
+	.btn {
+    border-radius: 0;
+    }
+   /*页码样式*/
+    .pagination{
+    	margin: 20px 355px;
+    }
+    .pagination li a{
+    	color: #666666;
+    	margin-right: 10px;
+    }
+    .pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover{
+    	color: #FFFFFF;
+	    background-color: #16B3E0;
+	    border-color: #16B3E0;
+    }
+    .pagination>li:first-child>a, .pagination>li:first-child>span{
+    	border-radius: 0;
+    }
+    .pagination>li:last-child>a, .pagination>li:last-child>span{
+    	border-radius: 0;
+    }
+    .pagination>li>a, .pagination>li>span{
+    	padding: 10px 16px;
+    }
+   
+
